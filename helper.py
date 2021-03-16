@@ -1,0 +1,86 @@
+import re
+import time
+from typing import Dict, List
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+BTN_URL_REGEX = re.compile(
+    r"(\[([^\[]+?)\]\(buttonurl:(?:/{0,2})(.+?)(:same)?\))"
+)
+
+
+SMART_OPEN = '“'
+SMART_CLOSE = '”'
+START_CHAR = ('\'', '"', SMART_OPEN)
+
+
+def split_quotes(text: str) -> List:
+    if any(text.startswith(char) for char in START_CHAR):
+        counter = 1  # ignore first char -> is some kind of quote
+        while counter < len(text):
+            if text[counter] == "\\":
+                counter += 1
+            elif text[counter] == text[0] or (text[0] == SMART_OPEN and text[counter] == SMART_CLOSE):
+                break
+            counter += 1
+        else:
+            return text.split(None, 1)
+
+        # 1 to avoid starting quote, and counter is exclusive so avoids ending
+        key = remove_escapes(text[1:counter].strip())
+        # index will be in range, or `else` would have been executed and returned
+        rest = text[counter + 1:].strip()
+        if not key:
+            key = text[0] + text[0]
+        return list(filter(None, [key, rest]))
+    else:
+        return text.split(None, 1)
+
+def parser(text):
+  buttons = []
+  note_data = ""
+  prev = 0
+  for match in BTN_URL_REGEX.finditer(text):
+          # Check if btnurl is escaped
+          n_escapes = 0
+          to_check = match.start(1) - 1
+          while to_check > 0 and text[to_check] == "\\":
+              n_escapes += 1
+              to_check -= 1
+
+          # if even, not escaped -> create button
+          if n_escapes % 2 == 0:
+              # create a thruple with button label, url, and newline status
+              if bool(match.group(4)) and buttons:
+                  buttons[-1].append(InlineKeyboardButton(
+                    text=match.group(2),
+                    url=match.group(3)
+                ))
+              else:
+                  buttons.append([InlineKeyboardButton(
+                    text=match.group(2),
+                    url=match.group(3)
+                )])
+              note_data += text[prev:match.start(1)]
+              prev = match.end(1)
+          # if odd, escaped -> move along
+          else:
+              note_data += text[prev:to_check]
+              prev = match.start(1) - 1
+  else:
+       note_data += text[prev:]
+
+  return note_data, buttons
+
+def remove_escapes(text: str) -> str:
+    counter = 0
+    res = ""
+    is_escaped = False
+    while counter < len(text):
+        if is_escaped:
+            res += text[counter]
+            is_escaped = False
+        elif text[counter] == "\\":
+            is_escaped = True
+        else:
+            res += text[counter]
+        counter += 1
+    return res
