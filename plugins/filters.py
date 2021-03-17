@@ -43,6 +43,7 @@ async def _filter(client, message):
             title = a.title
         else:
             await message.reply_text('not conected')
+            return
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id
         title = message.chat.title
@@ -122,6 +123,7 @@ async def _filter(client, message):
 async def get_all(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
+
     if chat_type == "private":
         grpid = await find_conn(message,str(userid))
         if grpid is not None:
@@ -130,6 +132,7 @@ async def get_all(client, message):
             title = a.title
         else:
             await message.reply_text('not conectred')
+            return
 
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id

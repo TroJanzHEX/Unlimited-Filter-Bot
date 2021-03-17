@@ -35,11 +35,14 @@ async def find_filter(group_id, name):
     mycol = mydb[str(group_id)]
     
     query = mycol.find( {"text":name})
-    for file in query:
-        reply_text = file['reply']
-        btn = file['btn']
-        file = file['file']
-    return reply_text,btn,file
+    try:
+        for file in query:
+            reply_text = file['reply']
+            btn = file['btn']
+            file = file['file']
+        return reply_text, btn, file
+    except:
+        return None, None, None
 
 
 async def get_filters(group_id):
@@ -47,10 +50,12 @@ async def get_filters(group_id):
 
     texts = []
     query = mycol.find()
-    if query is not None:
+    try:
         for file in query:
             text = file['text']
             texts.append(text)
+    except:
+        pass
     return texts
 
 

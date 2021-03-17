@@ -52,7 +52,7 @@ async def connect_grp(client,message):
 
 @Client.on_message(filters.private & filters.command(["disconnect"]))
 async def dis_con(client,message):
-       usrid = message.from_user.id
-       await delete_con(message, str(usrid))
+    usrid = message.from_user.id
+    await delete_con(message, str(usrid))
         
         
