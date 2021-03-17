@@ -25,7 +25,7 @@ async def conn_grp(message, grid, usrid):
         logger.exception('Couldnt save, check your db')
     
         
-async def find_conn(message, usrid):
+async def find_conn(usrid):
 
     query = mycol.find( {"_id": usrid} )
     try:

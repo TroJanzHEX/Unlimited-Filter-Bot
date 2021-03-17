@@ -24,33 +24,40 @@ from plugins.helpers import parser,split_quotes
 
 
 @Client.on_message(filters.command('add'))
-async def _filter(client, message):
+async def addfilter(client, message):
       
     userid = message.from_user.id
     chat_type = message.chat.type
     args = message.text.split(None, 1)
 
     if chat_type == "private":
-        grpid = await find_conn(message, str(userid))
+        grpid = await find_conn(str(userid))
         if grpid is not None:
             grp_id = grpid
-            a = await client.get_chat(grpid)
-            title = a.title
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
         else:
-            await message.reply_text('not conected')
+            await message.reply_text('not conected', quote=True)
             return
+
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id
         title = message.chat.title
+
+    else:
+        return
 
     if len(args) < 2:
         return
     
     extracted = split_quotes(args[1])
-    keyword = extracted[0].lower()
-    text = keyword
+    text = extracted[0].lower()
    
-    if len(extracted) < 1:
+    if not message.reply_to_message and len(extracted) < 2:
         return
 
     if len(extracted) >= 2:
@@ -58,8 +65,9 @@ async def _filter(client, message):
         fileid = None
         if not reply_text:
             await message.reply_text('You cannot have the buttons alone without even a text')
+            return
 
-    if message.reply_to_message and message.reply_to_message.photo:
+    elif message.reply_to_message and message.reply_to_message.photo:
         try:
             fileid = message.reply_to_message.photo.file_id
             reply_text, btn = parser(message.reply_to_message.caption.html)
@@ -108,6 +116,8 @@ async def _filter(client, message):
             reply_text = ""
             btn = "[]"                   
     
+    else:
+        return
     
     await add_filter(message, grp_id, text, reply_text, btn, fileid)
 
@@ -120,7 +130,7 @@ async def get_all(client, message):
     chat_type = message.chat.type
 
     if chat_type == "private":
-        grpid = await find_conn(message,str(userid))
+        grpid = await find_conn(str(userid))
         if grpid is not None:
             grp_id = grpid
             a = await client.get_chat(grpid)
@@ -132,6 +142,9 @@ async def get_all(client, message):
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id
         title = message.chat.title
+
+    else:
+        return
 
     texts = await get_filters(grp_id)
     count = await countfilters(grp_id)
@@ -147,8 +160,9 @@ async def get_all(client, message):
 async def del_filter(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
+
     if chat_type == "private":
-        grpid  = await find_conn(message,str(userid))
+        grpid  = await find_conn(str(userid))
         if grpid is not None:
             grpid = grpid
             a = await client.get_chat(grpid)
@@ -160,10 +174,12 @@ async def del_filter(client, message):
         grp_id = message.chat.id
         title = message.chat.title
 
-    cmd, g = message.text.split(" ", 1)
-    text = g
+    else:
+        return
 
-    await delete_fil(message, text, grpid)
+    cmd, query = message.text.split(" ", 1)
+
+    await delete_fil(message, query, grpid)
         
 
 @Client.on_message(filters.group & filters.text)
@@ -173,7 +189,8 @@ async def recive_filter(client,message):
 
     reply_text, btn, fileid = await find_filter(group_id, name) 
 
-    if not (reply_text and btn and fileid):
+    if btn is None:
+        print("n")
         return
 
     if fileid == "None":
