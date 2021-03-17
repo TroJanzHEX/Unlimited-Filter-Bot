@@ -1,7 +1,5 @@
-import pyrogram
-from pyrogram import filters,Client
+from pyrogram import filters, Client
 from mongo.connect_mongo import conn_grp, find_conn, delete_con
-
 
 
 

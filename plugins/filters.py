@@ -1,24 +1,27 @@
-import asyncio
 import os
-import sqlite3
-import time
-import pyrogram
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from sample_config import Config
-from translation import Translation
+from pyrogram import filters, Client
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from pyrogram import filters,Client
+if bool(os.environ.get("WEBHOOK", False)):
+    from sample_config import Config
+else:
+    from config import Config
+
 from mongo.filter_mongo import(
-add_filter,
-find_filter,
-get_filters,
-delete_fil,
-countfilters
+   add_filter,
+   find_filter,
+   get_filters,
+   delete_fil,
+   countfilters
 )
+
 from mongo.connect_mongo import find_conn
 
 from helper import parser,split_quotes
+
+
+
 @Client.on_message(filters.command('start'))
 async def _start(client, message):
      await message.reply_text("soon")

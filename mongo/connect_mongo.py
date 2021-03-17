@@ -1,18 +1,14 @@
 
-import pymongo
-from pymongo.errors import DuplicateKeyError
 import os
+import pymongo
 
 if bool(os.environ.get("WEBHOOK", False)):
     from sample_config import Config
 else:
     from config import Config
  
-
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient['Cluster0']
-
-
 mycol = mydb['connection']   
 
 
