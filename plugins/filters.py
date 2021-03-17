@@ -1,4 +1,5 @@
 import os
+import pyrogram
 
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -8,7 +9,7 @@ if bool(os.environ.get("WEBHOOK", False)):
 else:
     from config import Config
 
-from mongo.filter_mongo import(
+from database.filters_mdb import(
    add_filter,
    find_filter,
    get_filters,
@@ -16,9 +17,9 @@ from mongo.filter_mongo import(
    countfilters
 )
 
-from mongo.connect_mongo import find_conn
+from database.connections_mdb import find_conn
 
-from helper import parser,split_quotes
+from plugins.helpers import parser,split_quotes
 
 
 
