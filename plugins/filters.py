@@ -23,11 +23,6 @@ from plugins.helpers import parser,split_quotes
 
 
 
-@Client.on_message(filters.command('start'))
-async def _start(client, message):
-    await message.reply_text("soon")
-
-
 @Client.on_message(filters.command('add'))
 async def _filter(client, message):
       
