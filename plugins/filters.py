@@ -178,6 +178,9 @@ async def recive_filter(client,message):
 
     reply_text, btn, fileid = await find_filter(group_id, name) 
 
+    if not (reply_text and btn and fileid):
+        return
+
     if fileid == "None":
         if btn == "[]":
             await message.reply_text(reply_text)
