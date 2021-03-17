@@ -16,8 +16,7 @@ async def conn_grp(message, grid, usrid):
 
     data = {
         '_id': str(usrid),
-        'group id': str(grid)
-        
+        'group id': str(grid)   
     }
 
     try:
@@ -31,14 +30,14 @@ async def find_conn(message, usrid):
     query = mycol.find( {"_id": usrid} )
     try:
         for file in query:
-            grid = file['group id']
-           
+            grid = file['group id']         
         return grid
     except:
         return None
 
 
 async def delete_con(message, usrid):
+    
     myquery = { "_id": usrid }
     try:
         mycol.delete_one(myquery)

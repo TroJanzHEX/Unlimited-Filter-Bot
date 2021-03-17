@@ -37,40 +37,40 @@ def split_quotes(text: str) -> List:
         return text.split(None, 1)
 
 def parser(text):
-  buttons = []
-  note_data = ""
-  prev = 0
-  for match in BTN_URL_REGEX.finditer(text):
-          # Check if btnurl is escaped
-          n_escapes = 0
-          to_check = match.start(1) - 1
-          while to_check > 0 and text[to_check] == "\\":
-              n_escapes += 1
-              to_check -= 1
+    buttons = []
+    note_data = ""
+    prev = 0
+    for match in BTN_URL_REGEX.finditer(text):
+        # Check if btnurl is escaped
+        n_escapes = 0
+        to_check = match.start(1) - 1
+        while to_check > 0 and text[to_check] == "\\":
+            n_escapes += 1
+            to_check -= 1
 
-          # if even, not escaped -> create button
-          if n_escapes % 2 == 0:
-              # create a thruple with button label, url, and newline status
-              if bool(match.group(4)) and buttons:
-                  buttons[-1].append(InlineKeyboardButton(
+        # if even, not escaped -> create button
+        if n_escapes % 2 == 0:
+            # create a thruple with button label, url, and newline status
+            if bool(match.group(4)) and buttons:
+                buttons[-1].append(InlineKeyboardButton(
                     text=match.group(2),
                     url=match.group(3)
                 ))
-              else:
-                  buttons.append([InlineKeyboardButton(
+            else:
+                buttons.append([InlineKeyboardButton(
                     text=match.group(2),
                     url=match.group(3)
                 )])
-              note_data += text[prev:match.start(1)]
-              prev = match.end(1)
-          # if odd, escaped -> move along
-          else:
-              note_data += text[prev:to_check]
-              prev = match.start(1) - 1
-  else:
-       note_data += text[prev:]
+            note_data += text[prev:match.start(1)]
+            prev = match.end(1)
+        # if odd, escaped -> move along
+        else:
+            note_data += text[prev:to_check]
+            prev = match.start(1) - 1
+    else:
+        note_data += text[prev:]
 
-  return note_data, buttons
+    return note_data, buttons
 
 def remove_escapes(text: str) -> str:
     counter = 0
