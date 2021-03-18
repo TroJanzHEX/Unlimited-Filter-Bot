@@ -209,7 +209,7 @@ async def del_filter(client, message):
     if chat_type == "private":
         grpid  = await find_conn(str(userid))
         if grpid is not None:
-            grpid = grpid
+            grp_id = grpid
             try:
                 chat = await client.get_chat(grpid)
                 title = chat.title
@@ -226,9 +226,10 @@ async def del_filter(client, message):
     else:
         return
 
-    cmd, query = message.text.split(" ", 1)
+    cmd, text = message.text.split(" ", 1)
+    query = text.lower()
 
-    await delete_fil(message, query, grpid)
+    await delete_fil(message, query, grp_id)
         
 
 @Client.on_message(filters.group & filters.text)
