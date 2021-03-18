@@ -9,6 +9,7 @@ else:
     from config import Config
 
 from script import Script
+from plugins.filters import delall
 
 
 @trojanz.on_callback_query()
@@ -60,3 +61,12 @@ async def cb_handler(client, query):
             disable_web_page_preview=True
         )
         return
+
+
+    elif query.data == "delallconfirm":
+        await delall(client, query.message)
+        await query.message.delete()
+    
+    elif query.data == "delallcancel":
+        await query.message.reply_to_message.delete()
+        await query.message.delete()

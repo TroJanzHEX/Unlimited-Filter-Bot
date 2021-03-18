@@ -233,8 +233,8 @@ async def del_filter(client, message):
     await delete_fil(message, query, grp_id)
         
 
-@Client.on_message(filters.command('delall'))
-async def delall(client, message):
+@Client.on_message(filters.command(["delall"]))
+async def delallconfirm(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
 
@@ -250,6 +250,7 @@ async def delall(client, message):
                 return
         else:
             await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
 
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id
@@ -260,7 +261,44 @@ async def delall(client, message):
 
     st = await client.get_chat_member(grp_id, userid)
     if st.status == "creator":
-        await del_all(message, grp_id, title)
+        await message.reply_text(
+            f"This will delete all filters from '{title}'.\nDo you want to continue??",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(text="YES",callback_data="delallconfirm")],
+                [InlineKeyboardButton(text="CANCEL",callback_data="delallcancel")]
+            ]),
+            quote=True
+        )
+
+
+async def delall(client, message):
+    userid = message.reply_to_message.from_user.id
+    chat_type = message.chat.type
+
+    if chat_type == "private":
+        grpid  = await find_conn(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type == "group" or "supergroup":
+        grp_id = message.chat.id
+        title = message.chat.title
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if st.status == "creator":
+        await del_all(message.reply_to_message, grp_id, title)
 
 
 @Client.on_message(filters.group & filters.text)
