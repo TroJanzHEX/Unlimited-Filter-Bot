@@ -67,6 +67,27 @@ async def addfilter(client, message):
             await message.reply_text('You cannot have the buttons alone without even a text')
             return
 
+    elif message.reply_to_message and message.reply_to_message.reply_markup:
+        try:
+            rm = message.reply_to_message.reply_markup
+            btn = rm.inline_keyboard
+            msg = message.reply_to_message.document or\
+                  message.reply_to_message.video or\
+                  message.reply_to_message.photo or\
+                  message.reply_to_message.audio or\
+                  message.reply_to_message.animation or\
+                  message.reply_to_message.sticker
+            if msg:
+                fileid = msg.file_id
+                reply_text = message.reply_to_message.caption.html
+            else:
+                reply_text = message.reply_to_message.text.html
+                fileid = None
+        except:
+            reply_text = ""
+            btn = "[]" 
+            fileid = None
+
     elif message.reply_to_message and message.reply_to_message.photo:
         try:
             fileid = message.reply_to_message.photo.file_id
