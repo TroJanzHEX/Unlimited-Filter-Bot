@@ -12,23 +12,20 @@ mydb = myclient['Cluster0']
 
 
 
-async def add_filter(message, grp_id, text, reply_text, btn, file):
+async def add_filter(grp_id, text, reply_text, btn, file):
     mycol = mydb[str(grp_id)]
 
+    data = {
+        'text':str(text),
+        'reply':str(reply_text),
+        'btn':str(btn),
+        'file':str(file)
+    }
+
     try:
-        myquery = {'text':text }
-        if myquery:
-            mycol.delete_one(myquery)
-        mycol.insert_one(
-            {
-                'text':str(text),
-                'reply':str(reply_text),
-                'btn':str(btn),
-                'file':str(file)
-            }
-        )
-    except Exception as e:
-        print(e)
+        mycol.update_one({'text': str(text)},  {"$set": data}, upsert=True)
+    except:
+        print('Couldnt save, check your db')
              
      
 async def find_filter(group_id, name):

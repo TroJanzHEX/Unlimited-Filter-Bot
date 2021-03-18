@@ -149,9 +149,13 @@ async def addfilter(client, message):
     else:
         return
     
-    await add_filter(message, grp_id, text, reply_text, btn, fileid)
+    await add_filter(grp_id, text, reply_text, btn, fileid)
 
-    await message.reply_text(f"{text} saved to {title}")
+    await message.reply_text(
+        f"Filter for  `{text}`  added in  **{title}**",
+        quote=True,
+        parse_mode="md"
+    )
 
 
 @Client.on_message(filters.command('viewfilters'))
