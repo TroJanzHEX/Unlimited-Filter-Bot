@@ -136,7 +136,15 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"                   
-    
+
+    elif message.reply_to_message and message.reply_to_message.text:
+        try:
+            fileid = None
+            reply_text, btn = parser(message.reply_to_message.text.html)
+        except:
+            reply_text = ""
+            btn = "[]"
+
     else:
         return
     
