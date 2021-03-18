@@ -71,6 +71,20 @@ async def delete_fil(message, text, group_id):
         await message.reply_text("Couldn't find that filter!")
 
 
+async def del_all(message, group_id, title):
+    if str(group_id) not in mydb.list_collection_names():
+        await message.reply_text(f"Nothing to remove in {title}!", quote=True)
+        return
+        
+    mycol = mydb[str(group_id)]
+    try:
+        mycol.drop()
+        await message.reply_text(f"All filters from {title} has been removed", quote=True)
+    except:
+        await message.reply_text(f"Couldn't remove all filters from group!", quote=True)
+        return
+
+
 async def countfilters(group_id):
     mycol = mydb[str(group_id)]
 

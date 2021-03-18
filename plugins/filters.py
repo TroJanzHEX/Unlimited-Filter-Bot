@@ -14,6 +14,7 @@ from database.filters_mdb import(
    find_filter,
    get_filters,
    delete_fil,
+   del_all,
    countfilters
 )
 
@@ -231,6 +232,36 @@ async def del_filter(client, message):
 
     await delete_fil(message, query, grp_id)
         
+
+@Client.on_message(filters.command('delall'))
+async def delall(client, message):
+    userid = message.from_user.id
+    chat_type = message.chat.type
+
+    if chat_type == "private":
+        grpid  = await find_conn(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+
+    elif chat_type == "group" or "supergroup":
+        grp_id = message.chat.id
+        title = message.chat.title
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if st.status == "creator":
+        await del_all(message, grp_id, title)
+
 
 @Client.on_message(filters.group & filters.text)
 async def recive_filter(client,message):
