@@ -74,8 +74,8 @@ async def delete_fil(message, text, group_id):
 async def countfilters(group_id):
     mycol = mydb[str(group_id)]
 
-    query = mycol.count()
+    count = mycol.count()
     if query == 0:
-        return 0
+        return False
     else:
-        return query
+        return count
