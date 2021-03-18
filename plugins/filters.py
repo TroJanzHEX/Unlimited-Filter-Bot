@@ -187,12 +187,13 @@ async def get_all(client, message):
     texts = await get_filters(grp_id)
     count = await countfilters(grp_id)
     if count:
-        filterlist = f"Total number of filters in {title} : {count}\n\n"
+        filterlist = f"Total number of filters in **{title}** : {count}\n\n"
         for text in texts:
             keywords = " ×  `{}`\n".format(text)
             if len(keywords) + len(filterlist) > 4096:
                 await message.reply_text(
                     text=filterlist,
+                    quote=True,
                     parse_mode="md"
                 )
                 filterlist = keywords
@@ -203,6 +204,7 @@ async def get_all(client, message):
 
     await message.reply_text(
         text=filterlist,
+        quote=True,
         parse_mode="md"
     )
         
