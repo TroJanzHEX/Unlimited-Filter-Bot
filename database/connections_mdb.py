@@ -42,7 +42,7 @@ async def delete_con(message, usrid):
     try:
         mycol.delete_one(myquery)
     except:
-       await message.reply_text('didnt connected!!', quote=True)
+       await message.reply_text("That group isn't connected yet!", quote=True)
     else:
-        await message.reply_text('disconnected',quote=True)
+        await message.reply_text('Group Disconnected successfully.',quote=True)
         

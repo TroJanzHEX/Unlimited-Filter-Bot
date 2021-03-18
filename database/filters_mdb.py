@@ -66,9 +66,9 @@ async def delete_fil(message, text, group_id):
     query = mycol.count_documents(myquery)
     if query == 1:
         mycol.delete_one(myquery)
-        await message.reply_text(f'{text} deleted')
+        await message.reply_text(f"`{text}` deleted. I'll not respond to that filter anymore.", parse_mode="md")
     else:
-        await message.reply_text("not found")
+        await message.reply_text("Couldn't find that filter!")
 
 
 async def countfilters(group_id):

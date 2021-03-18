@@ -41,7 +41,7 @@ async def addfilter(client, message):
                 await message.reply_text("Make sure I'm present in your group!!", quote=True)
                 return
         else:
-            await message.reply_text('not conected', quote=True)
+            await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
     elif chat_type == "group" or "supergroup":
@@ -64,7 +64,7 @@ async def addfilter(client, message):
         reply_text, btn = parser(extracted[1]) 
         fileid = None
         if not reply_text:
-            await message.reply_text('You cannot have the buttons alone without even a text')
+            await message.reply_text("You cannot have buttons alone, give some text to go with it!")
             return
 
     elif message.reply_to_message and message.reply_to_message.reply_markup:
@@ -154,10 +154,14 @@ async def get_all(client, message):
         grpid = await find_conn(str(userid))
         if grpid is not None:
             grp_id = grpid
-            a = await client.get_chat(grpid)
-            title = a.title
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
         else:
-            await message.reply_text('not conectred')
+            await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
     elif chat_type == "group" or "supergroup":
@@ -170,10 +174,10 @@ async def get_all(client, message):
     texts = await get_filters(grp_id)
     count = await countfilters(grp_id)
 
-    b = "\n".join(texts)
+    filters = "\n".join(texts)
 
     await message.reply_text(
-        f"Total number of filters in {title} {count}\n{b}"
+        f"Total number of filters in {title} : {count}\n\n{filters}"
     )
 
         
@@ -186,10 +190,14 @@ async def del_filter(client, message):
         grpid  = await find_conn(str(userid))
         if grpid is not None:
             grpid = grpid
-            a = await client.get_chat(grpid)
-            title = a.title
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
         else:
-            await message.reply_text('not conectred')
+            await message.reply_text("I'm not connected to any groups!", quote=True)
 
     elif chat_type == "group" or "supergroup":
         grp_id = message.chat.id

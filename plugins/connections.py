@@ -10,9 +10,9 @@ async def connect_grp(client,message):
         cmd, group_id = message.text.split(" ", 1)
         usrid = message.from_user.id
     except:
-        await message.reply_text('grpid is invalid',
-            quote=True,
-            parse_mode="md"
+        await message.reply_text(
+            "Invalid Group ID!",
+            quote=True
         )
         return    
         
@@ -21,14 +21,13 @@ async def connect_grp(client,message):
         if (st.status == "administrator") or (st.status == "creator"):
             pass
         else:
-            await message.reply_text("You should be admin in Given group!", quote=True, parse_mode="md")
+            await message.reply_text("You should be an admin in Given group!", quote=True)
             return
     except Exception as e:
         print(e)
         await message.reply_text(
-            'your grp id is invalid',
-            quote=True,
-            parse_mode="md"
+            "Invalid Group ID!",
+            quote=True
         )
         return
 
@@ -38,14 +37,14 @@ async def connect_grp(client,message):
             ttl = await client.get_chat(group_id)
             title = ttl.title
             await conn_grp(message, group_id, usrid)
-            await message.reply_text(f'sucessfully connected to {title}')
+            await message.reply_text(f'Sucessfully connected to {title}')
         else:
-            await message.reply_text("Add me as admin in given  group", quote=True, parse_mode="md")
+            await message.reply_text("Add me as an admin in given group", quote=True)
     except Exception as e:
         print(e)
-        await message.reply_text('Group id invalid',
-            quote=True,
-            parse_mode="md"
+        await message.reply_text(
+            "Invalid Group ID!",
+            quote=True
         )
         return
 
