@@ -9,40 +9,148 @@ else:
  
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient['Cluster0']
-mycol = mydb['connection']   
+mycol = mydb['CONNECTION']   
 
 
-async def conn_grp(message, grid, usrid):
+async def conn_grp(group_id, user_id):
+    query = mycol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "active_group": 0 }
+    )
+    if query is not None:
+        group_ids = []
+        for x in query["group_details"]:
+            group_ids.append(x["group_id"])
 
-    data = {
-        '_id': str(usrid),
-        'group id': str(grid)   
+        if group_id in group_ids:
+            return False
+
+    group_details = {
+        "group_id" : group_id
     }
 
-    try:
-        mycol.update_one({'_id': str(usrid)},  {"$set": data}, upsert=True)
-    except ValidationError:
-        logger.exception('Couldnt save, check your db')
+    data = {
+        '_id': user_id,
+        'group_details' : [group_details],
+        'active_group' : group_id,
+    }
     
-        
-async def find_conn(usrid):
+    if mycol.count_documents( {"_id": user_id} ) == 0:
+        try:
+            mycol.insert_one(data)
+            return True
+        except:
+            print('Some error occured!')
 
-    query = mycol.find( {"_id": usrid} )
-    try:
-        for file in query:
-            grid = file['group id']         
-        return grid
-    except:
+    else:
+        try:
+            mycol.update_one(
+                {'_id': user_id},
+                {
+                    "$push": {"group_details": group_details},
+                    "$set": {"active_group" : group_id}
+                }
+            )
+            return True
+        except:
+            print('Some error occured!')
+
+        
+async def find_conn(user_id):
+
+    query = mycol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "group_details": 0 }
+    )
+    if query:
+        group_id = query['active_group']
+        if group_id != None:
+            return int(group_id)
+        else:
+            return None
+    else:
         return None
 
 
-async def delete_con(message, usrid):
-    
-    myquery = { "_id": usrid }
-    try:
-        mycol.delete_one(myquery)
-    except:
-       await message.reply_text("That group isn't connected yet!", quote=True)
+async def all_conn(user_id):
+    query = mycol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "active_group": 0 }
+    )
+    if query is not None:
+        group_ids = []
+        for x in query["group_details"]:
+            group_ids.append(x["group_id"])
+        return group_ids
     else:
-        await message.reply_text('Group Disconnected successfully.',quote=True)
-        
+        return None
+
+
+async def if_active(user_id, group_id):
+    query = mycol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "group_details": 0 }
+    )
+    if query is not None:
+        if query['active_group'] == group_id:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+async def make_active(user_id, group_id):
+    update = mycol.update_one(
+        {'_id': user_id},
+        {"$set": {"active_group" : group_id}}
+    )
+    if update.modified_count == 0:
+        return False
+    else:
+        return True
+
+
+async def make_inactive(user_id):
+    update = mycol.update_one(
+        {'_id': user_id},
+        {"$set": {"active_group" : None}}
+    )
+    if update.modified_count == 0:
+        return False
+    else:
+        return True
+
+
+async def delete_con(user_id, group_id):
+
+    try:
+        update = mycol.update_one(
+            {"_id": user_id},
+            {"$pull" : { "group_details" : {"group_id":group_id} } }
+        )
+        if update.modified_count == 0:
+            return False
+        else:
+            query = mycol.find_one(
+                { "_id": user_id },
+                { "_id": 0 }
+            )
+            if len(query["group_details"]) >= 1:
+                if query['active_group'] == group_id:
+                    prvs_group_id = query["group_details"][len(query["group_details"]) - 1]["group_id"]
+
+                    mycol.update_one(
+                        {'_id': user_id},
+                        {"$set": {"active_group" : prvs_group_id}}
+                    )
+            else:
+                mycol.update_one(
+                    {'_id': user_id},
+                    {"$set": {"active_group" : None}}
+                )                    
+            return True
+    except Exception as e:
+        print(e)
+        return False
+
