@@ -52,6 +52,11 @@ async def addfilter(client, message):
     else:
         return
 
+    st = await client.get_chat_member(grp_id, userid)
+    if not ((st.status == "administrator") or (st.status == "creator")):
+        return
+        
+
     if len(args) < 2:
         await message.reply_text("Command Incomplete :(", quote=True)
         return
@@ -186,6 +191,10 @@ async def get_all(client, message):
     else:
         return
 
+    st = await client.get_chat_member(grp_id, userid)
+    if not ((st.status == "administrator") or (st.status == "creator")):
+        return
+
     texts = await get_filters(grp_id)
     count = await countfilters(grp_id)
     if count:
@@ -233,6 +242,10 @@ async def del_filter(client, message):
         title = message.chat.title
 
     else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if not ((st.status == "administrator") or (st.status == "creator")):
         return
 
     cmd, text = message.text.split(" ", 1)

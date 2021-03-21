@@ -75,7 +75,12 @@ async def dis_con(client,message):
         await message.reply_text("Run /connections to view or disconnect from groups!", quote=True)
 
     elif (chat_type == "group") or (chat_type == "supergroup"):
-        group_id = message.chat.id     
+        group_id = message.chat.id
+
+        st = await client.get_chat_member(group_id, userid)
+        if not ((st.status == "administrator") or (st.status == "creator")):
+            return
+
         delcon = await delete_con(str(userid), str(group_id))
         if delcon:
             await message.reply_text("Successfully disconnected from this chat", quote=True)
