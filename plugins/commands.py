@@ -12,6 +12,31 @@ else:
 from script import Script
 
 
+@trojanz.on_message(filters.command(["id"]) & (filters.private | filters.group))
+async def showid(client, message):
+    chat_type = message.chat.type
+
+    if chat_type == "private":
+        user_id = message.chat.id
+        await message.reply_text(
+            f"Your ID : `{user_id}`",
+            parse_mode="md",
+            quote=True
+        )
+    elif chat_type == "group" or "supergroup":
+        user_id = message.from_user.id
+        chat_id = message.chat.id
+        if message.reply_to_message:
+            reply_id = f"Replied User ID : `{message.reply_to_message.from_user.id}`"
+        else:
+            reply_id = ""
+        await message.reply_text(
+            f"Your ID : `{user_id}`\nThis Group ID : `{chat_id}`\n\n{reply_id}",
+            parse_mode="md",
+            quote=True
+        )   
+
+
 @trojanz.on_message(filters.command(["start"]) & filters.private)
 async def start(client, message):
     await message.reply_text(
