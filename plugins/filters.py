@@ -45,7 +45,7 @@ async def addfilter(client, message):
             await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         grp_id = message.chat.id
         title = message.chat.title
 
@@ -177,7 +177,7 @@ async def get_all(client, message):
             await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         grp_id = message.chat.id
         title = message.chat.title
 
@@ -226,7 +226,7 @@ async def del_filter(client, message):
         else:
             await message.reply_text("I'm not connected to any groups!", quote=True)
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         grp_id = message.chat.id
         title = message.chat.title
 
@@ -258,7 +258,7 @@ async def delallconfirm(client, message):
             await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         grp_id = message.chat.id
         title = message.chat.title
 
@@ -295,7 +295,7 @@ async def delall(client, message):
             await message.reply_text("I'm not connected to any groups!", quote=True)
             return
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         grp_id = message.chat.id
         title = message.chat.title
 

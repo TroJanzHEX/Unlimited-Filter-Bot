@@ -13,7 +13,7 @@ async def connect_grp(client,message):
     if chat_type == "private":
         cmd, group_id = message.text.split(" ", 1)
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         group_id = message.chat.id
 
     try:
@@ -44,7 +44,7 @@ async def connect_grp(client,message):
                     quote=True,
                     parse_mode="md"
                 )
-                if chat_type == "group" or "supergroup":
+                if (chat_type == "group") or (chat_type == "supergroup"):
                     await client.send_message(
                         userid,
                         f"Connected to **{title}** !",
@@ -74,7 +74,7 @@ async def dis_con(client,message):
     if chat_type == "private":
         await message.reply_text("Run /connections to view or disconnect from groups!", quote=True)
 
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         group_id = message.chat.id     
         delcon = await delete_con(str(userid), str(group_id))
         if delcon:

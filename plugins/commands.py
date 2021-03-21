@@ -23,7 +23,7 @@ async def showid(client, message):
             parse_mode="md",
             quote=True
         )
-    elif chat_type == "group" or "supergroup":
+    elif (chat_type == "group") or (chat_type == "supergroup"):
         user_id = message.from_user.id
         chat_id = message.chat.id
         if message.reply_to_message:
