@@ -1,3 +1,10 @@
+import os
+
+if bool(os.environ.get("WEBHOOK", False)):
+    from sample_config import Config
+else:
+    from config import Config
+
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -27,7 +34,7 @@ async def connect_grp(client,message):
 
     try:
         st = await client.get_chat_member(group_id, userid)
-        if (st.status == "administrator") or (st.status == "creator"):
+        if (st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
             pass
         else:
             await message.reply_text("You should be an admin in Given group!", quote=True)
@@ -87,7 +94,7 @@ async def dis_con(client,message):
         group_id = message.chat.id
 
         st = await client.get_chat_member(group_id, userid)
-        if not ((st.status == "administrator") or (st.status == "creator")):
+        if not ((st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS)):
             return
 
         delcon = await delete_con(str(userid), str(group_id))

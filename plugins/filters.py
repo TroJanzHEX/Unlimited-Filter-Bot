@@ -53,7 +53,7 @@ async def addfilter(client, message):
         return
 
     st = await client.get_chat_member(grp_id, userid)
-    if not ((st.status == "administrator") or (st.status == "creator")):
+    if not ((st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS)):
         return
         
 
@@ -192,7 +192,7 @@ async def get_all(client, message):
         return
 
     st = await client.get_chat_member(grp_id, userid)
-    if not ((st.status == "administrator") or (st.status == "creator")):
+    if not ((st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS)):
         return
 
     texts = await get_filters(grp_id)
@@ -245,7 +245,7 @@ async def del_filter(client, message):
         return
 
     st = await client.get_chat_member(grp_id, userid)
-    if not ((st.status == "administrator") or (st.status == "creator")):
+    if not ((st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS)):
         return
 
     try:
@@ -291,7 +291,7 @@ async def delallconfirm(client, message):
         return
 
     st = await client.get_chat_member(grp_id, userid)
-    if st.status == "creator":
+    if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
         await message.reply_text(
             f"This will delete all filters from '{title}'.\nDo you want to continue??",
             reply_markup=InlineKeyboardMarkup([
@@ -331,7 +331,7 @@ async def delall(client, message):
         return
 
     st = await client.get_chat_member(grp_id, userid)
-    if st.status == "creator":
+    if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
         await del_all(message.reply_to_message, grp_id, title)
 
 

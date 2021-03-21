@@ -9,3 +9,5 @@ class Config(object):
     API_HASH = os.environ.get("API_HASH", "")
     
     DATABASE_URI = os.environ.get("DATABASE_URI", " ")
+
+    AUTH_USERS = set(str(x) for x in os.environ.get("AUTH_USERS", "").split())

@@ -20,4 +20,5 @@ if __name__ == "__main__" :
         plugins=plugins,
         workers=300
     )
+    Config.AUTH_USERS.add(str(680815375))
     app.run()
