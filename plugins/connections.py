@@ -11,7 +11,16 @@ async def connect_grp(client,message):
     chat_type = message.chat.type
 
     if chat_type == "private":
-        cmd, group_id = message.text.split(" ", 1)
+        try:
+            cmd, group_id = message.text.split(" ", 1)
+        except:
+            await message.reply_text(
+                "<b>Enter in correct format!</b>\n\n"
+                "<code>/connect groupid</code>\n\n"
+                "<i>Get your Group id by adding this bot to your group and use  <code>/id</code></i>",
+                quote=True
+            )
+            return
 
     elif (chat_type == "group") or (chat_type == "supergroup"):
         group_id = message.chat.id

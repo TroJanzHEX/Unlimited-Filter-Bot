@@ -248,7 +248,17 @@ async def del_filter(client, message):
     if not ((st.status == "administrator") or (st.status == "creator")):
         return
 
-    cmd, text = message.text.split(" ", 1)
+    try:
+        cmd, text = message.text.split(" ", 1)
+    except:
+        await message.reply_text(
+            "<i>Mention the filtername which you wanna delete!</i>\n\n"
+            "<code>/del filtername</code>\n\n"
+            "Use /viewfilters to view all available filters",
+            quote=True
+        )
+        return
+
     query = text.lower()
 
     await delete_fil(message, query, grp_id)
