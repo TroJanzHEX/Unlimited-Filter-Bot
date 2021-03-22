@@ -94,3 +94,20 @@ async def countfilters(group_id):
         return False
     else:
         return count
+
+
+async def allfilters():
+    collections = mydb.list_collection_names()
+
+    if "CONNECTION" in collections:
+        collections.remove("CONNECTION")
+
+    totalcount = 0
+    for collection in collections:
+        mycol = mydb[collection]
+        count = mycol.count()
+        totalcount = totalcount + count
+
+    totalcollections = len(collections)
+
+    return totalcollections, totalcount

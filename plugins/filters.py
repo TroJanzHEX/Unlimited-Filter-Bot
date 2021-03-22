@@ -15,7 +15,8 @@ from database.filters_mdb import(
    get_filters,
    delete_fil,
    del_all,
-   countfilters
+   countfilters,
+   allfilters
 )
 
 from database.connections_mdb import find_conn
@@ -333,6 +334,21 @@ async def delall(client, message):
     st = await client.get_chat_member(grp_id, userid)
     if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
         await del_all(message.reply_to_message, grp_id, title)
+
+
+@Client.on_message((filters.private | filters.group) & filters.command(["status"]))
+async def all_filters(client,message):
+    if str(message.from_user.id) not in Config.AUTH_USERS:
+        return
+
+    chats, filters = await allfilters()
+
+    await message.reply_text(
+        "**Current status of your bot!**\n\n"
+        f"> __**{filters}** filters across **{chats}** chats__\n\n",
+        quote=True,
+        parse_mode="md"
+    )
 
 
 @Client.on_message(filters.group & filters.text)
