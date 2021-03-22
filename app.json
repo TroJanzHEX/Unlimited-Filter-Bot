@@ -1,0 +1,55 @@
+{
+    "name": "UNLIMITED FILTER BOT",
+    "description": "An unlimited filter bot using Mongo DB",
+    "logo": "https://telegra.ph/file/71aaa621508cd696ab538.jpg",
+    "keywords": [
+        "UNLIMITED",
+        "Filter",
+        "Telegram Bot",
+        "TroJanzHEX"
+    ],
+    "website": "https://TroJanzHEX.me",
+    "repository": "https://github.com/TroJanzHEX/Unlimited-Filter-Bot",
+    "success_url": "https://telegram.dog/TroJanzHEX",
+    "env": {
+        "WEBHOOK": {
+            "description": "No need to change this field!",
+            "value": "ANYTHING"
+        },
+        "TG_BOT_TOKEN": {
+            "description": "You Telegram Bot Token from @BotFather",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "Your API Hash from my.telegram.org or @UseTGXBot",
+            "value": ""
+        },
+        "APP_ID": {
+            "description": "Your APP ID from my.telegram.org or @UseTGXBot",
+            "value": ""
+        },
+        "AUTH_USERS": {
+            "description": "ID of users that can use the bot commands",
+            "value": ""
+        },
+        "DATABASE_URI": {
+            "description": "Database URL from https://cloud.mongodb.com/",
+            "value": ""
+        },
+        "DATABASE_NAME": {
+            "description": "Your database name from mongoDB. ( Default will 'Cluster0' )",
+            "value": "Cluster0"
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
