@@ -101,6 +101,8 @@ async def allfilters():
 
     if "CONNECTION" in collections:
         collections.remove("CONNECTION")
+    if "USERS" in collections:
+        collections.remove("USERS")
 
     totalcount = 0
     for collection in collections:

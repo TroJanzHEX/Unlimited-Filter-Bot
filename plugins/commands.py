@@ -10,6 +10,7 @@ else:
     from config import Config
 
 from script import Script
+from database.users_mdb import adduser
 
 
 @trojanz.on_message(filters.command(["id"]) & (filters.private | filters.group))
@@ -56,6 +57,16 @@ async def start(client, message):
         ),
         reply_to_message_id=message.message_id
     )
+
+    try:
+        await adduser(
+            str(message.from_user.id),
+            str(message.from_user.username),
+            str(message.from_user.first_name + message.from_user.last_name),
+            str(message.from_user.dc_id)
+        )
+    except:
+        pass
 
 
 @trojanz.on_message(filters.command(["help"]) & filters.private)

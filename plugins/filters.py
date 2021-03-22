@@ -20,6 +20,7 @@ from database.filters_mdb import(
 )
 
 from database.connections_mdb import find_conn
+from database.users_mdb import adduser, allusers
 
 from plugins.helpers import parser,split_quotes
 
@@ -342,13 +343,28 @@ async def all_filters(client,message):
         return
 
     chats, filters = await allfilters()
+    users = await allusers()
 
     await message.reply_text(
         "**Current status of your bot!**\n\n"
-        f"> __**{filters}** filters across **{chats}** chats__\n\n",
+        f"> __**{filters}** filters across **{chats}** chats__\n\n"
+        f"> __**{users} users have interacted with your bot!**__",
         quote=True,
         parse_mode="md"
     )
+
+
+@Client.on_message(filters.group & filters.all)
+async def add_user(client,message):
+    try:
+        await adduser(
+            str(message.from_user.id),
+            str(message.from_user.username),
+            str(message.from_user.first_name + message.from_user.last_name),
+            str(message.from_user.dc_id)
+        )
+    except:
+        pass
 
 
 @Client.on_message(filters.group & filters.text)
