@@ -28,3 +28,16 @@ async def adduser(id, username, name, dcid):
 async def allusers():
     count = mycol.count()
     return count
+
+
+async def finduser(id):
+    query = mycol.find( {"_id":id})
+
+    try:
+        for file in query:
+            name = file['name']
+            username = file['username']
+            dc_id = file['dc_id']
+        return name, username, dc_id
+    except:
+        return None, None, None
