@@ -7,7 +7,7 @@ else:
     from config import Config
  
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
-mydb = myclient['Cluster0']
+mydb = myclient[Config.DATABASE_NAME]
 mycol = mydb['USERS']
 
 

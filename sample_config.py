@@ -8,6 +8,8 @@ class Config(object):
 
     API_HASH = os.environ.get("API_HASH", "")
     
-    DATABASE_URI = os.environ.get("DATABASE_URI", " ")
+    DATABASE_URI = os.environ.get("DATABASE_URI", "")
+
+    DATABASE_NAME = str(os.environ.get("DATABASE_NAME", "Cluster0"))
 
     AUTH_USERS = set(str(x) for x in os.environ.get("AUTH_USERS", "").split())
