@@ -354,8 +354,37 @@ async def all_filters(client,message):
     )
 
 
-@Client.on_message(filters.group & filters.all)
-async def add_user(client,message):
+@Client.on_message(filters.group & filters.text)
+async def recive_filter(client,message):
+    group_id = message.chat.id
+    name = message.text.lower()
+
+    reply_text, btn, fileid = await find_filter(group_id, name) 
+
+    if btn is not None:
+        if fileid == "None":
+            if btn == "[]":
+                await message.reply_text(reply_text)
+            else:
+                button = eval(btn)
+                await message.reply_text(
+                    reply_text,
+                    parse_mode="html",
+                    reply_markup=InlineKeyboardMarkup(button)
+                )
+        else:
+            if btn == "[]":
+                await message.reply_cached_media(
+                    fileid,
+                    caption=reply_text or ""
+                )
+            else:
+                button = eval(btn) 
+                await message.reply_cached_media(
+                    fileid,
+                    caption=reply_text or "",
+                    reply_markup=InlineKeyboardMarkup(button)
+                )
     try:
         await adduser(
             str(message.from_user.id),
@@ -365,40 +394,4 @@ async def add_user(client,message):
         )
     except:
         pass
-
-
-@Client.on_message(filters.group & filters.text)
-async def recive_filter(client,message):
-    group_id = message.chat.id
-    name = message.text.lower()
-
-    reply_text, btn, fileid = await find_filter(group_id, name) 
-
-    if btn is None:
-        return
-
-    if fileid == "None":
-        if btn == "[]":
-            await message.reply_text(reply_text)
-        else:
-            button = eval(btn)
-            await message.reply_text(
-                reply_text,
-                parse_mode="html",
-                reply_markup=InlineKeyboardMarkup(button)
-            )
-    else:
-        if btn == "[]":
-            await message.reply_cached_media(
-                fileid,
-                caption=reply_text or ""
-            )
-        else:
-            button = eval(btn) 
-            await message.reply_cached_media(
-                fileid,
-                caption=reply_text or "",
-                reply_markup=InlineKeyboardMarkup(button)
-            )
-
       
