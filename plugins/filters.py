@@ -360,7 +360,7 @@ async def add_user(client,message):
         await adduser(
             str(message.from_user.id),
             str(message.from_user.username),
-            str(message.from_user.first_name + message.from_user.last_name),
+            str(message.from_user.first_name + " " + (message.from_user.last_name or "")),
             str(message.from_user.dc_id)
         )
     except:
