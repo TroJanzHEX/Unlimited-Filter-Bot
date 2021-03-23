@@ -56,7 +56,7 @@ async def get_filters(group_id):
     return texts
 
 
-async def delete_fil(message, text, group_id):
+async def delete_filter(message, text, group_id):
     mycol = mydb[str(group_id)]
     
     myquery = {'text':text }
@@ -86,7 +86,7 @@ async def del_all(message, group_id, title):
         return
 
 
-async def countfilters(group_id):
+async def count_filters(group_id):
     mycol = mydb[str(group_id)]
 
     count = mycol.count()
@@ -96,7 +96,7 @@ async def countfilters(group_id):
         return count
 
 
-async def allfilters():
+async def filter_stats():
     collections = mydb.list_collection_names()
 
     if "CONNECTION" in collections:

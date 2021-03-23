@@ -12,7 +12,7 @@ mycol = mydb['USERS']
 
 
 
-async def adduser(id, username, name, dcid):
+async def add_user(id, username, name, dcid):
     data = {
         '_id': id,
         'username' : username,
@@ -25,12 +25,12 @@ async def adduser(id, username, name, dcid):
         pass
 
 
-async def allusers():
+async def all_users():
     count = mycol.count()
     return count
 
 
-async def finduser(id):
+async def find_user(id):
     query = mycol.find( {"_id":id})
 
     try:

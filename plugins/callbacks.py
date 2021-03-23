@@ -10,7 +10,7 @@ else:
 
 from script import Script
 from plugins.filters import delall
-from database.connections_mdb import all_conn, if_active, delete_con, make_active, make_inactive
+from database.connections_mdb import all_connections, if_active, delete_connection, make_active, make_inactive
 
 
 @trojanz.on_callback_query()
@@ -159,7 +159,7 @@ async def cb_handler(client, query):
         user_id = query.from_user.id
         group_id = query.data.split(":")[1]
 
-        delcon = await delete_con(str(user_id), str(group_id))
+        delcon = await delete_connection(str(user_id), str(group_id))
 
         if delcon:
             await query.message.edit_text(
@@ -178,7 +178,7 @@ async def cb_handler(client, query):
 
         userid = query.from_user.id
 
-        groupids = await all_conn(str(userid))
+        groupids = await all_connections(str(userid))
         if groupids is None:
             await query.message.edit_text(
                 "There are no active connections!! Connect to some groups first.",

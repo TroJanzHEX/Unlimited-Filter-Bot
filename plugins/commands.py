@@ -10,7 +10,7 @@ else:
     from config import Config
 
 from script import Script
-from database.users_mdb import adduser, finduser
+from database.users_mdb import add_user, find_user
 
 
 @trojanz.on_message(filters.command(["id"]) & (filters.private | filters.group))
@@ -50,7 +50,7 @@ async def showinfo(client, message):
         if not (len(id) == 10 or len(id) == 9):
             await message.reply_text("__Enter a valid USER ID__", quote=True, parse_mode="md")
             return
-        name, username, dcid = await finduser(str(id))
+        name, username, dcid = await find_user(str(id))
         if not name:
             await message.reply_text("__USER ID not found in database!__", quote=True, parse_mode="md")
             return
@@ -105,7 +105,7 @@ async def start(client, message):
     )
 
     try:
-        await adduser(
+        await add_user(
             str(message.from_user.id),
             str(message.from_user.username),
             str(message.from_user.first_name + " " + (message.from_user.last_name or "")),

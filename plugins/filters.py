@@ -13,14 +13,14 @@ from database.filters_mdb import(
    add_filter,
    find_filter,
    get_filters,
-   delete_fil,
+   delete_filter,
    del_all,
-   countfilters,
-   allfilters
+   count_filters,
+   filter_stats
 )
 
-from database.connections_mdb import find_conn
-from database.users_mdb import adduser, allusers
+from database.connections_mdb import active_connection
+from database.users_mdb import add_user, all_users
 
 from plugins.helpers import parser,split_quotes
 
@@ -34,7 +34,7 @@ async def addfilter(client, message):
     args = message.text.split(None, 1)
 
     if chat_type == "private":
-        grpid = await find_conn(str(userid))
+        grpid = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
             try:
@@ -173,7 +173,7 @@ async def get_all(client, message):
     chat_type = message.chat.type
 
     if chat_type == "private":
-        grpid = await find_conn(str(userid))
+        grpid = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
             try:
@@ -198,7 +198,7 @@ async def get_all(client, message):
         return
 
     texts = await get_filters(grp_id)
-    count = await countfilters(grp_id)
+    count = await count_filters(grp_id)
     if count:
         filterlist = f"Total number of filters in **{title}** : {count}\n\n"
         for text in texts:
@@ -222,12 +222,12 @@ async def get_all(client, message):
     )
         
 @Client.on_message(filters.command('del'))
-async def del_filter(client, message):
+async def deletefilter(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
 
     if chat_type == "private":
-        grpid  = await find_conn(str(userid))
+        grpid  = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
             try:
@@ -263,7 +263,7 @@ async def del_filter(client, message):
 
     query = text.lower()
 
-    await delete_fil(message, query, grp_id)
+    await delete_filter(message, query, grp_id)
         
 
 @Client.on_message(filters.command(["delall"]))
@@ -272,7 +272,7 @@ async def delallconfirm(client, message):
     chat_type = message.chat.type
 
     if chat_type == "private":
-        grpid  = await find_conn(str(userid))
+        grpid  = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
             try:
@@ -309,7 +309,7 @@ async def delall(client, message):
     chat_type = message.chat.type
 
     if chat_type == "private":
-        grpid  = await find_conn(str(userid))
+        grpid  = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
             try:
@@ -338,12 +338,12 @@ async def delall(client, message):
 
 
 @Client.on_message((filters.private | filters.group) & filters.command(["status"]))
-async def all_filters(client,message):
+async def bot_status(client,message):
     if str(message.from_user.id) not in Config.AUTH_USERS:
         return
 
-    chats, filters = await allfilters()
-    users = await allusers()
+    chats, filters = await filter_stats()
+    users = await all_users()
 
     await message.reply_text(
         "**Current status of your bot!**\n\n"
@@ -355,7 +355,7 @@ async def all_filters(client,message):
 
 
 @Client.on_message(filters.group & filters.text)
-async def recive_filter(client,message):
+async def give_filter(client,message):
     group_id = message.chat.id
     name = message.text.lower()
 
@@ -386,7 +386,7 @@ async def recive_filter(client,message):
                     reply_markup=InlineKeyboardMarkup(button)
                 )
     try:
-        await adduser(
+        await add_user(
             str(message.from_user.id),
             str(message.from_user.username),
             str(message.from_user.first_name + " " + (message.from_user.last_name or "")),

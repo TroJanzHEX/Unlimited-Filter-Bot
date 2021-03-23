@@ -8,12 +8,12 @@ else:
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from database.connections_mdb import conn_grp, all_conn, if_active, delete_con
+from database.connections_mdb import add_connection, all_connections, if_active, delete_connection
 
 
 
 @Client.on_message((filters.private | filters.group) & filters.command(["connect"]))
-async def connect_grp(client,message):
+async def addconnection(client,message):
     userid = message.from_user.id
     chat_type = message.chat.type
 
@@ -53,7 +53,7 @@ async def connect_grp(client,message):
             ttl = await client.get_chat(group_id)
             title = ttl.title
 
-            addcon = await conn_grp(str(group_id), str(userid))
+            addcon = await add_connection(str(group_id), str(userid))
             if addcon:
                 await message.reply_text(
                     f"Sucessfully connected to **{title}**\nNow manage your group from my pm !",
@@ -83,7 +83,7 @@ async def connect_grp(client,message):
 
 
 @Client.on_message((filters.private | filters.group) & filters.command(["disconnect"]))
-async def dis_con(client,message):
+async def deleteconnection(client,message):
     userid = message.from_user.id
     chat_type = message.chat.type
 
@@ -97,7 +97,7 @@ async def dis_con(client,message):
         if not ((st.status == "administrator") or (st.status == "creator") or (str(userid) in Config.AUTH_USERS)):
             return
 
-        delcon = await delete_con(str(userid), str(group_id))
+        delcon = await delete_connection(str(userid), str(group_id))
         if delcon:
             await message.reply_text("Successfully disconnected from this chat", quote=True)
         else:
@@ -108,7 +108,7 @@ async def dis_con(client,message):
 async def connections(client,message):
     userid = message.from_user.id
 
-    groupids = await all_conn(str(userid))
+    groupids = await all_connections(str(userid))
     if groupids is None:
         await message.reply_text(
             "There are no active connections!! Connect to some groups first.",

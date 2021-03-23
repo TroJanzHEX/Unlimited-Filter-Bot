@@ -1,4 +1,3 @@
-
 import os
 import pymongo
 
@@ -12,7 +11,7 @@ mydb = myclient[Config.DATABASE_NAME]
 mycol = mydb['CONNECTION']   
 
 
-async def conn_grp(group_id, user_id):
+async def add_connection(group_id, user_id):
     query = mycol.find_one(
         { "_id": user_id },
         { "_id": 0, "active_group": 0 }
@@ -56,7 +55,7 @@ async def conn_grp(group_id, user_id):
             print('Some error occured!')
 
         
-async def find_conn(user_id):
+async def active_connection(user_id):
 
     query = mycol.find_one(
         { "_id": user_id },
@@ -72,7 +71,7 @@ async def find_conn(user_id):
         return None
 
 
-async def all_conn(user_id):
+async def all_connections(user_id):
     query = mycol.find_one(
         { "_id": user_id },
         { "_id": 0, "active_group": 0 }
@@ -122,7 +121,7 @@ async def make_inactive(user_id):
         return True
 
 
-async def delete_con(user_id, group_id):
+async def delete_connection(user_id, group_id):
 
     try:
         update = mycol.update_one(
