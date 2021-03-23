@@ -111,7 +111,9 @@ python3 bot.py
 
 * DATABASE_NAME  - Your database name from mongoDB. Default will be 'Cluster0'
 
-* SAVE_USER  -  Do you need to save user details? Usefull for getting userinfo and total user counts. May reduce filter capacity :( . Give yes or no
+* SAVE_USER  -  Give yes or no . Usefull for getting userinfo and total user counts. May reduce filter capacity :( .
+
+* HEROKU_API_KEY  -  To check dyno status. Go to https://dashboard.heroku.com/account , scroll down and press Reveal API
 
 
 ## Credits

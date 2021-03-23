@@ -337,28 +337,6 @@ async def delall(client, message):
         await del_all(message.reply_to_message, grp_id, title)
 
 
-@Client.on_message((filters.private | filters.group) & filters.command(["status"]))
-async def bot_status(client,message):
-    if str(message.from_user.id) not in Config.AUTH_USERS:
-        return
-
-    chats, filters = await filter_stats()
-
-    if Config.SAVE_USER == "yes":
-        users = await all_users()
-        userstats = f"> __**{users} users have interacted with your bot!**__"
-    else:
-        userstats = ""
-
-    await message.reply_text(
-        "**Current status of your bot!**\n\n"
-        f"> __**{filters}** filters across **{chats}** chats__\n\n"
-        f"{userstats}",
-        quote=True,
-        parse_mode="md"
-    )
-
-
 @Client.on_message(filters.group & filters.text)
 async def give_filter(client,message):
     group_id = message.chat.id
