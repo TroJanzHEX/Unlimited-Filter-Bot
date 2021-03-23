@@ -65,6 +65,8 @@
 * `/connections`  -  Manage your connections. (only in PM)
 
 > Extras
+* `/status`  -  Shows current status of your bot (Auth User Only)
+
 * `/id`  -  Shows ID information
 
 * `/info <userid>`  -  Shows User Information. Also use `/info` as reply to some message for their details!
