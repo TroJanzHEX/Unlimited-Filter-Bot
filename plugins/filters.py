@@ -31,7 +31,7 @@ async def addfilter(client, message):
       
     userid = message.from_user.id
     chat_type = message.chat.type
-    args = message.text.split(None, 1)
+    args = message.text.html.split(None, 1)
 
     if chat_type == "private":
         grpid = await active_connection(str(userid))
