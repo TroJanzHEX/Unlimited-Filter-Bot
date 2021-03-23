@@ -343,12 +343,17 @@ async def bot_status(client,message):
         return
 
     chats, filters = await filter_stats()
-    users = await all_users()
+
+    if Config.SAVE_USER == "yes":
+        users = await all_users()
+        userstats = f"> __**{users} users have interacted with your bot!**__"
+    else:
+        userstats = ""
 
     await message.reply_text(
         "**Current status of your bot!**\n\n"
         f"> __**{filters}** filters across **{chats}** chats__\n\n"
-        f"> __**{users} users have interacted with your bot!**__",
+        f"{userstats}",
         quote=True,
         parse_mode="md"
     )
@@ -385,13 +390,14 @@ async def give_filter(client,message):
                     caption=reply_text or "",
                     reply_markup=InlineKeyboardMarkup(button)
                 )
-    try:
-        await add_user(
-            str(message.from_user.id),
-            str(message.from_user.username),
-            str(message.from_user.first_name + " " + (message.from_user.last_name or "")),
-            str(message.from_user.dc_id)
-        )
-    except:
-        pass
+    if Config.SAVE_USER == "yes":
+        try:
+            await add_user(
+                str(message.from_user.id),
+                str(message.from_user.username),
+                str(message.from_user.first_name + " " + (message.from_user.last_name or "")),
+                str(message.from_user.dc_id)
+            )
+        except:
+            pass
       

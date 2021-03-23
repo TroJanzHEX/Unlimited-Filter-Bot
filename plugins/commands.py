@@ -47,12 +47,30 @@ async def showinfo(client, message):
         pass
 
     if id:
-        if not (len(id) == 10 or len(id) == 9):
+        if (len(id) == 10 or len(id) == 9):
+            try:
+                checkid = int(id)
+            except:
+                await message.reply_text("__Enter a valid USER ID__", quote=True, parse_mode="md")
+                return
+        else:
             await message.reply_text("__Enter a valid USER ID__", quote=True, parse_mode="md")
-            return
-        name, username, dcid = await find_user(str(id))
+            return           
+
+        if Config.SAVE_USER == "yes":
+            name, username, dcid = await find_user(str(id))
+        else:
+            try:
+                user = await client.get_users(int(id))
+                name = str(user.first_name + (user.last_name or ""))
+                username = user.username
+                dcid = user.dc_id
+            except:
+                name = False
+                pass
+
         if not name:
-            await message.reply_text("__USER ID not found in database!__", quote=True, parse_mode="md")
+            await message.reply_text("__USER Details not found!!__", quote=True, parse_mode="md")
             return
     else:
         if message.reply_to_message:
@@ -103,16 +121,16 @@ async def start(client, message):
         ),
         reply_to_message_id=message.message_id
     )
-
-    try:
-        await add_user(
-            str(message.from_user.id),
-            str(message.from_user.username),
-            str(message.from_user.first_name + " " + (message.from_user.last_name or "")),
-            str(message.from_user.dc_id)
-        )
-    except:
-        pass
+    if Config.SAVE_USER == "yes":
+        try:
+            await add_user(
+                str(message.from_user.id),
+                str(message.from_user.username),
+                str(message.from_user.first_name + " " + (message.from_user.last_name or "")),
+                str(message.from_user.dc_id)
+            )
+        except:
+            pass
 
 
 @trojanz.on_message(filters.command(["help"]) & filters.private)

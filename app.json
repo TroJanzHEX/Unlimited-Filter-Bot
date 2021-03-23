@@ -38,7 +38,13 @@
         },
         "DATABASE_NAME": {
             "description": "Your database name from mongoDB. ( Default will 'Cluster0' )",
-            "value": "Cluster0"
+            "value": "Cluster0",
+            "required": false
+        },
+        "SAVE_USER": {
+            "description": "Do you need to save user details? Usefull for getting userinfo and total user counts. May reduce filter capacity :( . Give yes or no",
+            "value": "no",
+            "required": false
         }
     },
     "buildpacks": [

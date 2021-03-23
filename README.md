@@ -111,6 +111,8 @@ python3 bot.py
 
 * DATABASE_NAME  - Your database name from mongoDB. Default will be 'Cluster0'
 
+* SAVE_USER  -  Do you need to save user details? Usefull for getting userinfo and total user counts. May reduce filter capacity :( . Give yes or no
+
 
 ## Credits
 
