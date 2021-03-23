@@ -72,11 +72,11 @@
 * `/info <userid>`  -  Shows User Information. Also use `/info` as reply to some message for their details!
 
 
-<!-- ## You can check the video tutorial on how to deploy
+## You can check the video tutorial on how to deploy
 
-[Click here to see tutorial video](https://youtu.be/zum9AUlOgtQ)
+[Click here to see tutorial video](https://youtu.be/hkmc3e7U7R4)
 
-Thanks to [InfotelGroup](https://telegram.dog/InFoTelGroup) and [Erich Daniken](https://telegram.dog/ErichDaniken) for the video -->
+Thanks to [InfotelGroup](https://telegram.dog/InFoTelGroup) and [Erich Daniken](https://telegram.dog/ErichDaniken) for the video
 
 
 ## Any bugs or errors or suggestions, report at [TroJanzSupport](https://telegram.dog/TroJanzSupport)
