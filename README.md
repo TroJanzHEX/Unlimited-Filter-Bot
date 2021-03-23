@@ -46,7 +46,7 @@
 * Add your filters :)
 
 
-## Bot Commands - Works in Group only
+## Bot Commands
 
 (You need to be an admin or Auth User in order to use these commands)
 
