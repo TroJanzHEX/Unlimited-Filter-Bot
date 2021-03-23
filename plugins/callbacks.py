@@ -63,12 +63,24 @@ async def cb_handler(client, query):
 
 
     elif query.data == "delallconfirm":
-        await delall(client, query.message)
-        await query.message.delete()
+        clicked = query.from_user.id
+        typed = query.message.reply_to_message.from_user.id
+
+        if (clicked == typed) or (str(clicked) in Config.AUTH_USERS):
+            await delall(client, query.message)
+            await query.message.delete()
+        else:
+            await query.answer("Thats not for you!!",show_alert=True)
     
     elif query.data == "delallcancel":
-        await query.message.reply_to_message.delete()
-        await query.message.delete()
+        clicked = query.from_user.id
+        typed = query.message.reply_to_message.from_user.id
+
+        if (clicked == typed) or (str(clicked) in Config.AUTH_USERS):
+            await query.message.reply_to_message.delete()
+            await query.message.delete()
+        else:
+            await query.answer("Thats not for you!!",show_alert=True)
 
 
     elif "groupcb" in query.data:
