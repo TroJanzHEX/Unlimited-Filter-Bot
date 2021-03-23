@@ -24,7 +24,7 @@
             "description": "Your API Hash from my.telegram.org or @UseTGXBot",
             "value": ""
         },
-        "APP_ID": {
+        "API_ID": {
             "description": "Your APP ID from my.telegram.org or @UseTGXBot",
             "value": ""
         },
