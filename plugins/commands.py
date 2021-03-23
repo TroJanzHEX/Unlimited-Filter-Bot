@@ -217,12 +217,7 @@ async def start(client, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("HELP", callback_data="help_data"),
-                    InlineKeyboardButton("ABOUT", callback_data="about_data"),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "⭕️ JOIN OUR CHANNEL ⭕️", url="https://t.me/TroJanzHEX")
+                    InlineKeyboardButton("Command Help", callback_data="help_data")
                 ]
             ]
         ),
@@ -248,12 +243,12 @@ async def help(client, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("BACK", callback_data="start_data"),
-                    InlineKeyboardButton("ABOUT", callback_data="about_data"),
+                    InlineKeyboardButton("How to Deploy?", url="https://youtu.be/"),
+                    InlineKeyboardButton("About Me", callback_data="about_data")
                 ],
                 [
-                    InlineKeyboardButton(
-                        "⭕️ SUPPORT ⭕️", url="https://t.me/TroJanzSupport")
+                    InlineKeyboardButton("BOT Channel", url="https://t.me/TroJanzHEX"),
+                    InlineKeyboardButton("Support Group", url="https://t.me/TroJanzSupport")
                 ]
             ]
         ),
@@ -269,13 +264,13 @@ async def about(client, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("BACK", callback_data="help_data"),
-                    InlineKeyboardButton("START", callback_data="start_data"),
-                ],
-                [
                     InlineKeyboardButton(
                         "SOURCE CODE", url="https://github.com/TroJanzHEX/Unlimited-Filter-Bot")
-                ]
+                ],
+                [
+                    InlineKeyboardButton("BACK", callback_data="help_data"),
+                    InlineKeyboardButton("CLOSE", callback_data="close_data"),
+                ]                
             ]
         ),
         reply_to_message_id=message.message_id

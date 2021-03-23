@@ -1,16 +1,12 @@
 class Script(object):
 
-    START_MSG = """<b>Hello {},
+    START_MSG = """<b>Hy {},
 
 I'm an advanced filter bot with many capabilities!
-
 There is no practical limits for my filtering capacity :)
 
-So, Happy filtering !
-
-See <i>help</i> for commands and more details.
-
-© @TroJanzHEX</b>"""
+See <i>/help</i> for commands and more details.</b>
+"""
 
 
     HELP_MSG = """
@@ -50,6 +46,9 @@ See <i>help</i> for commands and more details.
 /id  -  Shows ID information
 
 <code>/info userid</code>  -  Shows User Information. Use <code>/info</code> as reply to some message for their details!
+
+
+<b>© @TroJanzHEX</b>
 """
 
 

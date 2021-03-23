@@ -18,11 +18,13 @@ async def cb_handler(client, query):
 
     if query.data == "start_data":
         await query.answer()
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("HELP", callback_data="help_data"),
-                InlineKeyboardButton("ABOUT", callback_data="about_data")],
-            [InlineKeyboardButton("⭕️ JOIN OUR CHANNEL ⭕️", url="https://t.me/TroJanzHEX")]
-        ])
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("Command Help", callback_data="help_data")
+                ]
+            ]
+        )
 
         await query.message.edit_text(
             Script.START_MSG.format(query.from_user.mention),
@@ -33,11 +35,18 @@ async def cb_handler(client, query):
 
     elif query.data == "help_data":
         await query.answer()
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("BACK", callback_data="start_data"),
-                InlineKeyboardButton("ABOUT", callback_data="about_data")],
-            [InlineKeyboardButton("⭕️ SUPPORT ⭕️", url="https://t.me/TroJanzSupport")]
-        ])
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("How to Deploy?", url="https://youtu.be/"),
+                    InlineKeyboardButton("About Me", callback_data="about_data")
+                ],
+                [
+                    InlineKeyboardButton("BOT Channel", url="https://t.me/TroJanzHEX"),
+                    InlineKeyboardButton("Support Group", url="https://t.me/TroJanzSupport")
+                ]
+            ]
+        )
 
         await query.message.edit_text(
             Script.HELP_MSG,
@@ -48,11 +57,18 @@ async def cb_handler(client, query):
 
     elif query.data == "about_data":
         await query.answer()
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("BACK", callback_data="help_data"),
-                InlineKeyboardButton("START", callback_data="start_data")],
-            [InlineKeyboardButton("SOURCE CODE", url="https://github.com/TroJanzHEX/Unlimited-Filter-Bot")]
-        ])
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "SOURCE CODE", url="https://github.com/TroJanzHEX/Unlimited-Filter-Bot")
+                ],
+                [
+                    InlineKeyboardButton("BACK", callback_data="help_data"),
+                    InlineKeyboardButton("CLOSE", callback_data="close_data"),
+                ]                
+            ]
+        )
 
         await query.message.edit_text(
             Script.ABOUT_MSG,
@@ -61,6 +77,9 @@ async def cb_handler(client, query):
         )
         return
 
+    elif query.data == "close_data":
+        await query.message.delete()
+        
 
     elif query.data == "delallconfirm":
         clicked = query.from_user.id
