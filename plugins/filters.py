@@ -14,9 +14,7 @@ from database.filters_mdb import(
    find_filter,
    get_filters,
    delete_filter,
-   del_all,
-   count_filters,
-   filter_stats
+   count_filters
 )
 
 from database.connections_mdb import active_connection
@@ -302,39 +300,6 @@ async def delallconfirm(client, message):
             ]),
             quote=True
         )
-
-
-async def delall(client, message):
-    userid = message.reply_to_message.from_user.id
-    chat_type = message.chat.type
-
-    if chat_type == "private":
-        grpid  = await active_connection(str(userid))
-        if grpid is not None:
-            grp_id = grpid
-            try:
-                chat = await client.get_chat(grpid)
-                title = chat.title
-            except:
-                await message.reply_text("Make sure I'm present in your group!!", quote=True)
-                return
-        else:
-            await message.reply_text(
-                "I'm not connected to any groups!\nCheck /connections or connect to any groups",
-                quote=True
-            )
-            return
-
-    elif (chat_type == "group") or (chat_type == "supergroup"):
-        grp_id = message.chat.id
-        title = message.chat.title
-
-    else:
-        return
-
-    st = await client.get_chat_member(grp_id, userid)
-    if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
-        await del_all(message.reply_to_message, grp_id, title)
 
 
 @Client.on_message(filters.group & filters.text)

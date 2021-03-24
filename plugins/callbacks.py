@@ -10,7 +10,16 @@ else:
 
 from script import Script
 from plugins.filters import delall
-from database.connections_mdb import all_connections, if_active, delete_connection, make_active, make_inactive
+from database.filters_mdb import del_all
+
+from database.connections_mdb import(
+    all_connections,
+    active_connection,
+    if_active,
+    delete_connection,
+    make_active,
+    make_inactive
+)
 
 
 @trojanz.on_callback_query()
@@ -82,24 +91,58 @@ async def cb_handler(client, query):
         
 
     elif query.data == "delallconfirm":
-        clicked = query.from_user.id
-        typed = query.message.reply_to_message.from_user.id
+        userid = query.from_user.id
+        chat_type = query.message.chat.type
 
-        if (clicked == typed) or (str(clicked) in Config.AUTH_USERS):
-            await delall(client, query.message)
-            await query.message.delete()
+        if chat_type == "private":
+            grpid  = await active_connection(str(userid))
+            if grpid is not None:
+                grp_id = grpid
+                try:
+                    chat = await client.get_chat(grpid)
+                    title = chat.title
+                except:
+                    await query.message.edit_text("Make sure I'm present in your group!!", quote=True)
+                    return
+            else:
+                await query.message.edit_text(
+                    "I'm not connected to any groups!\nCheck /connections or connect to any groups",
+                    quote=True
+                )
+                return
+
+        elif (chat_type == "group") or (chat_type == "supergroup"):
+            grp_id = query.message.chat.id
+            title = query.message.chat.title
+
         else:
-            await query.answer("Thats not for you!!",show_alert=True)
+            return
+
+        st = await client.get_chat_member(grp_id, userid)
+        if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):    
+            await del_all(query.message, grp_id, title)
+        else:
+            await query.answer("You need to be Group Owner or an Auth User to do that!",show_alert=True)
     
     elif query.data == "delallcancel":
-        clicked = query.from_user.id
-        typed = query.message.reply_to_message.from_user.id
-
-        if (clicked == typed) or (str(clicked) in Config.AUTH_USERS):
+        userid = query.from_user.id
+        chat_type = query.message.chat.type
+        
+        if chat_type == "private":
             await query.message.reply_to_message.delete()
             await query.message.delete()
-        else:
-            await query.answer("Thats not for you!!",show_alert=True)
+
+        elif (chat_type == "group") or (chat_type == "supergroup"):
+            grp_id = query.message.chat.id
+            st = await client.get_chat_member(grp_id, userid)
+            if (st.status == "creator") or (str(userid) in Config.AUTH_USERS):
+                await query.message.delete()
+                try:
+                    await query.message.reply_to_message.delete()
+                except:
+                    pass
+            else:
+                await query.answer("Thats not for you!!",show_alert=True)
 
 
     elif "groupcb" in query.data:
