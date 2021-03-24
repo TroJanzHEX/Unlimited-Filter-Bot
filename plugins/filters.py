@@ -70,7 +70,7 @@ async def addfilter(client, message):
         await message.reply_text("Add some content to save your filter!", quote=True)
         return
 
-    if (len(extracted) >= 2) and not message.reply_to_message.sticker:
+    if (len(extracted) >= 2) and not message.reply_to_message:
         reply_text, btn = parser(extracted[1]) 
         fileid = None
         if not reply_text:
