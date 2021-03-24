@@ -9,7 +9,6 @@ else:
     from config import Config
 
 from script import Script
-from plugins.filters import delall
 from database.filters_mdb import del_all
 
 from database.connections_mdb import(
