@@ -1,4 +1,5 @@
 import os
+import re
 import pyrogram
 
 from pyrogram import filters, Client
@@ -313,40 +314,45 @@ async def delallconfirm(client, message):
 @Client.on_message(filters.group & filters.text)
 async def give_filter(client,message):
     group_id = message.chat.id
-    name = message.text.lower()
+    name = message.text
 
-    reply_text, btn, alert, fileid = await find_filter(group_id, name)
-    if reply_text:
-        reply_text = reply_text.replace("\\n", "\n").replace("\\t", "\t")
+    keywords = await get_filters(group_id)
+    for keyword in keywords:
+        pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
+        if re.search(pattern, name, flags=re.IGNORECASE):
+            reply_text, btn, alert, fileid = await find_filter(group_id, keyword)
+            
+            if reply_text:
+                reply_text = reply_text.replace("\\n", "\n").replace("\\t", "\t")
 
-    if btn is not None:
-        try:
-            if fileid == "None":
-                if btn == "[]":
-                    await message.reply_text(reply_text)
-                else:
-                    button = eval(btn)
-                    await message.reply_text(
-                        reply_text,
-                        parse_mode="html",
-                        reply_markup=InlineKeyboardMarkup(button)
-                    )
-            else:
-                if btn == "[]":
-                    await message.reply_cached_media(
-                        fileid,
-                        caption=reply_text or ""
-                    )
-                else:
-                    button = eval(btn) 
-                    await message.reply_cached_media(
-                        fileid,
-                        caption=reply_text or "",
-                        reply_markup=InlineKeyboardMarkup(button)
-                    )
-        except Exception as e:
-            print(e)
-            pass
+            if btn is not None:
+                try:
+                    if fileid == "None":
+                        if btn == "[]":
+                            await message.reply_text(reply_text)
+                        else:
+                            button = eval(btn)
+                            await message.reply_text(
+                                reply_text,
+                                parse_mode="html",
+                                reply_markup=InlineKeyboardMarkup(button)
+                            )
+                    else:
+                        if btn == "[]":
+                            await message.reply_cached_media(
+                                fileid,
+                                caption=reply_text or ""
+                            )
+                        else:
+                            button = eval(btn) 
+                            await message.reply_cached_media(
+                                fileid,
+                                caption=reply_text or "",
+                                reply_markup=InlineKeyboardMarkup(button)
+                            )
+                except Exception as e:
+                    print(e)
+                    pass
 
     if Config.SAVE_USER == "yes":
         try:
