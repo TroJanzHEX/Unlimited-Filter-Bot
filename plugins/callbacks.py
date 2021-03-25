@@ -1,4 +1,5 @@
 import os
+import ast
 
 from pyrogram import Client as trojanz
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -9,7 +10,7 @@ else:
     from config import Config
 
 from script import Script
-from database.filters_mdb import del_all
+from database.filters_mdb import del_all, find_filter
 
 from database.connections_mdb import(
     all_connections,
@@ -269,3 +270,14 @@ async def cb_handler(client, query):
                 "Your connected group details ;\n\n",
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
+
+    elif "alertmessage" in query.data:
+        grp_id = query.message.chat.id
+        i = query.data.split(":")[1]
+        keyword = query.data.split(":")[2]
+        reply_text, btn, alerts, fileid = await find_filter(grp_id, keyword)
+        if alerts is not None:
+            alerts = ast.literal_eval(alerts)
+            alert = alerts[int(i)]
+            alert = alert.replace("\\n", "\n").replace("\\t", "\t")
+            await query.answer(alert,show_alert=True)

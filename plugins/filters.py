@@ -69,7 +69,7 @@ async def addfilter(client, message):
         return
 
     if (len(extracted) >= 2) and not message.reply_to_message:
-        reply_text, btn = parser(extracted[1]) 
+        reply_text, btn, alert = parser(extracted[1], text) 
         fileid = None
         if not reply_text:
             await message.reply_text("You cannot have buttons alone, give some text to go with it!", quote=True)
@@ -99,7 +99,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.photo:
         try:
             fileid = message.reply_to_message.photo.file_id
-            reply_text, btn = parser(message.reply_to_message.caption.html)
+            reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
             btn = "[]"
@@ -107,7 +107,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.video:
         try:
             fileid = message.reply_to_message.video.file_id
-            reply_text,btn = parser(message.reply_to_message.caption.html)
+            reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
             btn = "[]"
@@ -115,7 +115,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.audio:
         try:
             fileid = message.reply_to_message.audio.file_id
-            reply_text,btn = parser(message.reply_to_message.caption.html)
+            reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
             btn = "[]"  
@@ -123,7 +123,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.document:
         try:
             fileid = message.reply_to_message.document.file_id
-            reply_text,btn = parser(message.reply_to_message.caption.html)
+            reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
             btn = "[]"
@@ -131,7 +131,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.animation:
         try:
             fileid = message.reply_to_message.animation.file_id
-            reply_text,btn = parser(message.reply_to_message.caption.html)
+            reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
             btn = "[]"
@@ -139,7 +139,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.sticker:
         try:
             fileid = message.reply_to_message.sticker.file_id
-            reply_text,btn =  parser(extracted[1])
+            reply_text, btn, alert =  parser(extracted[1], text)
         
         except:
             reply_text = ""
@@ -148,7 +148,7 @@ async def addfilter(client, message):
     elif message.reply_to_message and message.reply_to_message.text:
         try:
             fileid = None
-            reply_text, btn = parser(message.reply_to_message.text.html)
+            reply_text, btn, alert = parser(message.reply_to_message.text.html, text)
         except:
             reply_text = ""
             btn = "[]"
@@ -156,7 +156,7 @@ async def addfilter(client, message):
     else:
         return
     
-    await add_filter(grp_id, text, reply_text, btn, fileid)
+    await add_filter(grp_id, text, reply_text, btn, fileid, alert)
 
     await message.reply_text(
         f"Filter for  `{text}`  added in  **{title}**",
@@ -307,7 +307,9 @@ async def give_filter(client,message):
     group_id = message.chat.id
     name = message.text.lower()
 
-    reply_text, btn, fileid = await find_filter(group_id, name) 
+    reply_text, btn, alert, fileid = await find_filter(group_id, name)
+    if reply_text:
+        reply_text = reply_text.replace("\\n", "\n").replace("\\t", "\t")
 
     if btn is not None:
         try:
@@ -337,7 +339,7 @@ async def give_filter(client,message):
         except Exception as e:
             print(e)
             pass
-        
+
     if Config.SAVE_USER == "yes":
         try:
             await add_user(

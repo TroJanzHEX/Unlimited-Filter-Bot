@@ -12,7 +12,7 @@ mydb = myclient[Config.DATABASE_NAME]
 
 
 
-async def add_filter(grp_id, text, reply_text, btn, file):
+async def add_filter(grp_id, text, reply_text, btn, file, alert):
     mycol = mydb[str(grp_id)]
     mycol.create_index([('text', 'text')])
 
@@ -20,7 +20,8 @@ async def add_filter(grp_id, text, reply_text, btn, file):
         'text':str(text),
         'reply':str(reply_text),
         'btn':str(btn),
-        'file':str(file)
+        'file':str(file),
+        'alert':str(alert)
     }
 
     try:
@@ -38,10 +39,11 @@ async def find_filter(group_id, name):
         for file in query:
             reply_text = file['reply']
             btn = file['btn']
+            alert = file['alert']
             file = file['file']
-        return reply_text, btn, file
+        return reply_text, btn, alert, file
     except:
-        return None, None, None
+        return None, None, None, None
 
 
 async def get_filters(group_id):

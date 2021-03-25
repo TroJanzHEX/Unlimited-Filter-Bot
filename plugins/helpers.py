@@ -6,7 +6,7 @@ from pyrogram.types import InlineKeyboardButton
 
 
 BTN_URL_REGEX = re.compile(
-    r"(\[([^\[]+?)\]\(buttonurl:(?:/{0,2})(.+?)(:same)?\))"
+    r"(\[([^\[]+?)\]\((buttonurl|buttonalert):(?:/{0,2})(.+?)(:same)?\))"
 )
 
 SMART_OPEN = '“'
@@ -36,10 +36,14 @@ def split_quotes(text: str) -> List:
     else:
         return text.split(None, 1)
 
-def parser(text):
+def parser(text, keyword):
+    if "buttonalert" in text:
+        text = (text.replace("\n", "\\n").replace("\t", "\\t"))
     buttons = []
     note_data = ""
     prev = 0
+    i = 0
+    alerts = []
     for match in BTN_URL_REGEX.finditer(text):
         # Check if btnurl is escaped
         n_escapes = 0
@@ -50,19 +54,34 @@ def parser(text):
 
         # if even, not escaped -> create button
         if n_escapes % 2 == 0:
-            # create a thruple with button label, url, and newline status
-            if bool(match.group(4)) and buttons:
-                buttons[-1].append(InlineKeyboardButton(
-                    text=match.group(2),
-                    url=match.group(3).replace(" ", "")
-                ))
-            else:
-                buttons.append([InlineKeyboardButton(
-                    text=match.group(2),
-                    url=match.group(3).replace(" ", "")
-                )])
             note_data += text[prev:match.start(1)]
             prev = match.end(1)
+            if match.group(3) == "buttonalert":
+                # create a thruple with button label, url, and newline status
+                if bool(match.group(5)) and buttons:
+                    buttons[-1].append(InlineKeyboardButton(
+                        text=match.group(2),
+                        callback_data=f"alertmessage:{i}:{keyword}"
+                    ))
+                else:
+                    buttons.append([InlineKeyboardButton(
+                        text=match.group(2),
+                        callback_data=f"alertmessage:{i}:{keyword}"
+                    )])
+                i = i + 1
+                alerts.append(match.group(4))
+            else:
+                if bool(match.group(5)) and buttons:
+                    buttons[-1].append(InlineKeyboardButton(
+                        text=match.group(2),
+                        url=match.group(4).replace(" ", "")
+                    ))
+                else:
+                    buttons.append([InlineKeyboardButton(
+                        text=match.group(2),
+                        url=match.group(4).replace(" ", "")
+                    )])
+
         # if odd, escaped -> move along
         else:
             note_data += text[prev:to_check]
@@ -70,7 +89,10 @@ def parser(text):
     else:
         note_data += text[prev:]
 
-    return note_data, buttons
+    try:
+        return note_data, buttons, alerts
+    except:
+        return note_data, buttons, None
 
 def remove_escapes(text: str) -> str:
     counter = 0
