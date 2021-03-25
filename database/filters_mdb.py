@@ -39,9 +39,12 @@ async def find_filter(group_id, name):
         for file in query:
             reply_text = file['reply']
             btn = file['btn']
-            alert = file['alert']
-            file = file['file']
-        return reply_text, btn, alert, file
+            fileid = file['file']
+            try:
+                alert = file['alert']
+            except:
+                alert = None
+        return reply_text, btn, alert, fileid
     except:
         return None, None, None, None
 
