@@ -310,29 +310,34 @@ async def give_filter(client,message):
     reply_text, btn, fileid = await find_filter(group_id, name) 
 
     if btn is not None:
-        if fileid == "None":
-            if btn == "[]":
-                await message.reply_text(reply_text)
+        try:
+            if fileid == "None":
+                if btn == "[]":
+                    await message.reply_text(reply_text)
+                else:
+                    button = eval(btn)
+                    await message.reply_text(
+                        reply_text,
+                        parse_mode="html",
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
             else:
-                button = eval(btn)
-                await message.reply_text(
-                    reply_text,
-                    parse_mode="html",
-                    reply_markup=InlineKeyboardMarkup(button)
-                )
-        else:
-            if btn == "[]":
-                await message.reply_cached_media(
-                    fileid,
-                    caption=reply_text or ""
-                )
-            else:
-                button = eval(btn) 
-                await message.reply_cached_media(
-                    fileid,
-                    caption=reply_text or "",
-                    reply_markup=InlineKeyboardMarkup(button)
-                )
+                if btn == "[]":
+                    await message.reply_cached_media(
+                        fileid,
+                        caption=reply_text or ""
+                    )
+                else:
+                    button = eval(btn) 
+                    await message.reply_cached_media(
+                        fileid,
+                        caption=reply_text or "",
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
+        except Exception as e:
+            print(e)
+            pass
+        
     if Config.SAVE_USER == "yes":
         try:
             await add_user(

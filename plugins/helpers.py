@@ -54,12 +54,12 @@ def parser(text):
             if bool(match.group(4)) and buttons:
                 buttons[-1].append(InlineKeyboardButton(
                     text=match.group(2),
-                    url=match.group(3)
+                    url=match.group(3).replace(" ", "")
                 ))
             else:
                 buttons.append([InlineKeyboardButton(
                     text=match.group(2),
-                    url=match.group(3)
+                    url=match.group(3).replace(" ", "")
                 )])
             note_data += text[prev:match.start(1)]
             prev = match.end(1)
