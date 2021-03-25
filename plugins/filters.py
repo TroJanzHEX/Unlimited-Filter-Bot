@@ -25,7 +25,7 @@ from plugins.helpers import parser,split_quotes
 
 
 
-@Client.on_message(filters.command('add'))
+@Client.on_message(filters.command(Config.ADD_FILTER_CMD))
 async def addfilter(client, message):
       
     userid = message.from_user.id
@@ -70,7 +70,7 @@ async def addfilter(client, message):
         return
 
     if (len(extracted) >= 2) and not message.reply_to_message:
-        reply_text, btn, alert = parser(extracted[1], text) 
+        reply_text, btn, alert = parser(extracted[1], text)
         fileid = None
         if not reply_text:
             await message.reply_text("You cannot have buttons alone, give some text to go with it!", quote=True)
@@ -228,7 +228,7 @@ async def get_all(client, message):
         parse_mode="md"
     )
         
-@Client.on_message(filters.command('del'))
+@Client.on_message(filters.command(Config.DELETE_FILTER_CMD))
 async def deletefilter(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
@@ -273,7 +273,7 @@ async def deletefilter(client, message):
     await delete_filter(message, query, grp_id)
         
 
-@Client.on_message(filters.command(["delall"]))
+@Client.on_message(filters.command(Config.DELETE_ALL_CMD))
 async def delallconfirm(client, message):
     userid = message.from_user.id
     chat_type = message.chat.type
@@ -321,7 +321,7 @@ async def give_filter(client,message):
         pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
         if re.search(pattern, name, flags=re.IGNORECASE):
             reply_text, btn, alert, fileid = await find_filter(group_id, keyword)
-            
+
             if reply_text:
                 reply_text = reply_text.replace("\\n", "\n").replace("\\t", "\t")
 

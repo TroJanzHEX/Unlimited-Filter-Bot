@@ -38,5 +38,13 @@ class Config(object):
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", "")
 
 
+    # OPTIONAL - To set alternate BOT COMMANDS
+    ADD_FILTER_CMD = os.environ.get("ADD_FILTER_CMD", "add")
+    DELETE_FILTER_CMD = os.environ.get("DELETE_FILTER_CMDD", "del")
+    DELETE_ALL_CMD = os.environ.get("DELETE_ALL_CMDD", "delall")
+    CONNECT_COMMAND = os.environ.get("CONNECT_COMMANDD", "connect")
+    DISCONNECT_COMMAND = os.environ.get("DISCONNECT_COMMANDD", "disconnect")
+
+
     # To record start time of bot
     BOT_START_TIME = time.time()

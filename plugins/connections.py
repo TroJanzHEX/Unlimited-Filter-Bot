@@ -12,7 +12,7 @@ from database.connections_mdb import add_connection, all_connections, if_active,
 
 
 
-@Client.on_message((filters.private | filters.group) & filters.command(["connect"]))
+@Client.on_message((filters.private | filters.group) & filters.command(Config.CONNECT_COMMAND))
 async def addconnection(client,message):
     userid = message.from_user.id
     chat_type = message.chat.type
@@ -82,7 +82,7 @@ async def addconnection(client,message):
         return
 
 
-@Client.on_message((filters.private | filters.group) & filters.command(["disconnect"]))
+@Client.on_message((filters.private | filters.group) & filters.command(Config.DISCONNECT_COMMAND))
 async def deleteconnection(client,message):
     userid = message.from_user.id
     chat_type = message.chat.type
