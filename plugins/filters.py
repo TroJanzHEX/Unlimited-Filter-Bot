@@ -1,5 +1,6 @@
 import os
 import re
+import io
 import pyrogram
 
 from pyrogram import filters, Client
@@ -208,17 +209,20 @@ async def get_all(client, message):
     count = await count_filters(grp_id)
     if count:
         filterlist = f"Total number of filters in **{title}** : {count}\n\n"
+
         for text in texts:
             keywords = " ×  `{}`\n".format(text)
-            if len(keywords) + len(filterlist) > 4096:
-                await message.reply_text(
-                    text=filterlist,
-                    quote=True,
-                    parse_mode="md"
+            
+            filterlist += keywords
+
+        if len(filterlist) > 4096:
+            with io.BytesIO(str.encode(filterlist.replace("`", ""))) as keyword_file:
+                keyword_file.name = "keywords.txt"
+                await message.reply_document(
+                    document=keyword_file,
+                    quote=True
                 )
-                filterlist = keywords
-            else:
-                filterlist += keywords
+            return
     else:
         filterlist = f"There are no active filters in **{title}**"
 
