@@ -91,10 +91,12 @@ async def addfilter(client, message):
             else:
                 reply_text = message.reply_to_message.text.html
                 fileid = None
+            alert = None
         except:
             reply_text = ""
             btn = "[]" 
             fileid = None
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.photo:
         try:
@@ -103,6 +105,7 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.video:
         try:
@@ -111,6 +114,7 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.audio:
         try:
@@ -118,7 +122,8 @@ async def addfilter(client, message):
             reply_text, btn, alert = parser(message.reply_to_message.caption.html, text)
         except:
             reply_text = ""
-            btn = "[]"  
+            btn = "[]"
+            alert = None
    
     elif message.reply_to_message and message.reply_to_message.document:
         try:
@@ -127,6 +132,7 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.animation:
         try:
@@ -135,15 +141,16 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.sticker:
         try:
             fileid = message.reply_to_message.sticker.file_id
             reply_text, btn, alert =  parser(extracted[1], text)
-        
         except:
             reply_text = ""
-            btn = "[]"                   
+            btn = "[]"
+            alert = None
 
     elif message.reply_to_message and message.reply_to_message.text:
         try:
@@ -152,6 +159,7 @@ async def addfilter(client, message):
         except:
             reply_text = ""
             btn = "[]"
+            alert = None
 
     else:
         return
