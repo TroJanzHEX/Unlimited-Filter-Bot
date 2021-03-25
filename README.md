@@ -31,7 +31,7 @@
 
 ### Features
 * Nearly unlimited filters
-* Supports all type of filters
+* Supports all type of filters(Including Alert Button Filter).
 * Can save button filters directly (Rose Bot Feature)
 * Supports multiple PM connections
 * And all other features of a Filter Bot :D
