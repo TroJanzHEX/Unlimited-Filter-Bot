@@ -338,7 +338,6 @@ async def give_filter(client,message):
                             button = eval(btn)
                             await message.reply_text(
                                 reply_text,
-                                parse_mode="html",
                                 reply_markup=InlineKeyboardMarkup(button)
                             )
                     else:
