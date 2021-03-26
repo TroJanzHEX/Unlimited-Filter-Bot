@@ -333,11 +333,12 @@ async def give_filter(client,message):
                 try:
                     if fileid == "None":
                         if btn == "[]":
-                            await message.reply_text(reply_text)
+                            await message.reply_text(reply_text, disable_web_page_preview=True)
                         else:
                             button = eval(btn)
                             await message.reply_text(
                                 reply_text,
+                                disable_web_page_preview=True,
                                 reply_markup=InlineKeyboardMarkup(button)
                             )
                     else:
