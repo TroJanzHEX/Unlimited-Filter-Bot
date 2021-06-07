@@ -47,7 +47,7 @@ async def cb_handler(client, query):
         keyboard = InlineKeyboardMarkup(Group", url="https://t.me/filmcornermm")
             [
                 [
-                    InlineKeyboardButton("Deploy", url="https://github.com/SMILE-KILLER10/Unlimited-Filter-Bot/tree/patch-1"),
+                    InlineKeyboardButton("GROUP", url="https://t.me/filmcornermm""),
                     InlineKeyboardButton("About Me", callback_data="about_data")
                 ],
                 [
@@ -70,7 +70,7 @@ async def cb_handler(client, query):
             [
                 [
                     InlineKeyboardButton(
-                        "SOURCE CODE", url="https://github.com/https://github.com/SMILE-KILLER10/Unlimited-Filter-Bot/tree/patch-1")
+                        "SOURCE CODE", url="https://t.me/filmcornermm"")
                 ],
                 [
                     InlineKeyboardButton("BACK", callback_data="help_data"),
