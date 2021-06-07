@@ -44,15 +44,15 @@ async def cb_handler(client, query):
 
     elif query.data == "help_data":
         await query.answer()
-        keyboard = InlineKeyboardMarkup(
+        keyboard = InlineKeyboardMarkup(Group", url="https://t.me/filmcornermm")
             [
                 [
                     InlineKeyboardButton("Deploy", url="https://github.com/SMILE-KILLER10/Unlimited-Filter-Bot/tree/patch-1"),
                     InlineKeyboardButton("About Me", callback_data="about_data")
                 ],
                 [
-                    InlineKeyboardButton("BOT Channel", url="https://t.me/publicchannalin"),
-                    InlineKeyboardButton("Support Group", url="https://t.me/filmcornermm")
+                    InlineKeyboardButton("Channel", url="https://t.me/publicchannalin"),
+                    InlineKeyboardButton("Group", url="https://t.me/filmcornermm")
                 ]
             ]
         )
