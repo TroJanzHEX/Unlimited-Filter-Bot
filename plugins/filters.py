@@ -357,7 +357,8 @@ async def give_filter(client,message):
                 except Exception as e:
                     print(e)
                     pass
-
+                break 
+                
     if Config.SAVE_USER == "yes":
         try:
             await add_user(
