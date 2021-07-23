@@ -321,7 +321,8 @@ async def give_filter(client,message):
     name = message.text
 
     keywords = await get_filters(group_id)
-    for keyword in keywords:
+    
+    for keyword in reversed(sorted(keywords, key=len)):
         pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
         if re.search(pattern, name, flags=re.IGNORECASE):
             reply_text, btn, alert, fileid = await find_filter(group_id, keyword)
