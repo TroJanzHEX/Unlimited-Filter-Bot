@@ -177,10 +177,11 @@ async def addfilter(client, message):
 
 @Client.on_message(filters.command('viewfilters'))
 async def get_all(client, message):
-    userid = message.from_user.id
+    
     chat_type = message.chat.type
 
     if chat_type == "private":
+        userid = message.from_user.id
         grpid = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
