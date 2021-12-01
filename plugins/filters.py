@@ -179,9 +179,9 @@ async def addfilter(client, message):
 async def get_all(client, message):
     
     chat_type = message.chat.type
-
+    userid = message.from_user.id
     if chat_type == "private":
-        userid = message.from_user.id
+        
         grpid = await active_connection(str(userid))
         if grpid is not None:
             grp_id = grpid
