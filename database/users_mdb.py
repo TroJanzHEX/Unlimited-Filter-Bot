@@ -26,7 +26,7 @@ async def add_user(id, username, name, dcid):
 
 
 async def all_users():
-    count = mycol.count()
+    count = mycol.count_documents({})
     return count
 
 
