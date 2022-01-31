@@ -44,15 +44,15 @@ async def cb_handler(client, query):
 
     elif query.data == "help_data":
         await query.answer()
-        keyboard = InlineKeyboardMarkup(
+        keyboard = InlineKeyboardMarkup(Group", url="https://t.me/filmcornermm")
             [
                 [
-                    InlineKeyboardButton("How to Deploy?", url="https://youtu.be/hkmc3e7U7R4"),
+                    InlineKeyboardButton("GROUP", url="https://t.me/filmcornermm""),
                     InlineKeyboardButton("About Me", callback_data="about_data")
                 ],
                 [
-                    InlineKeyboardButton("BOT Channel", url="https://t.me/TroJanzHEX"),
-                    InlineKeyboardButton("Support Group", url="https://t.me/TroJanzSupport")
+                    InlineKeyboardButton("Channel", url="https://t.me/publicchannalin"),
+                    InlineKeyboardButton("Group", url="https://t.me/filmcornermm")
                 ]
             ]
         )
@@ -70,7 +70,7 @@ async def cb_handler(client, query):
             [
                 [
                     InlineKeyboardButton(
-                        "SOURCE CODE", url="https://github.com/TroJanzHEX/Unlimited-Filter-Bot")
+                        "SOURCE CODE", url="https://t.me/filmcornermm"")
                 ],
                 [
                     InlineKeyboardButton("BACK", callback_data="help_data"),
