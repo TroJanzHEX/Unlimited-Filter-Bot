@@ -47,7 +47,7 @@
 
 #  Button Link and Alert Button :-
 
-[Button text](buttonurl/buttonalert:content)
+`[Button text](buttonurl/buttonalert:content)`
 
 ## Bot Commands
 
