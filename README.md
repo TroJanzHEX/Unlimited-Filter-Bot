@@ -45,6 +45,10 @@
 
 * Add your filters :)
 
+#  Button Link and Alert Button :-
+
+[Button Test](buttonurl://github.com/DesiBots/Unlimited-Filter-Bot)
+[Button Alert](buttonalert:Ahoy, its an alert)
 
 ## Bot Commands
 
