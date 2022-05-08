@@ -47,7 +47,9 @@
 
 #  Button Link and Alert Button :-
 
-`[Button text](buttonurl/buttonalert:content)`
+`[Button text](buttonurl:https://github.com/TroJanzHEX/Unlimited-Filter-Bot)`
+
+`[Button text](buttonalert:its an alert)`
 
 ## Bot Commands
 
