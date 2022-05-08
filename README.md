@@ -47,9 +47,7 @@
 
 #  Button Link and Alert Button :-
 
-[Button Test](buttonurl://github.com/DesiBots/Unlimited-Filter-Bot)
-
-[Button Alert](buttonalert:Ahoy, its an alert)
+[Button text](buttonurl/buttonalert:content)
 
 ## Bot Commands
 
