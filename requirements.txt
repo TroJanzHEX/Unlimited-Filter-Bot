@@ -1,4 +1,4 @@
-pyrogram
+pyrogram==1.4.16
 TgCrypto
 umongo
 dnspython
