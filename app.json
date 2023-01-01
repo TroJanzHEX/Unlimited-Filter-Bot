@@ -6,11 +6,11 @@
         "UNLIMITED",
         "Filter",
         "Telegram Bot",
-        "TroJanzHEX"
+        "sethu-sn"
     ],
-    "website": "https://TroJanzHEX.me",
-    "repository": "https://github.com/TroJanzHEX/Unlimited-Filter-Bot",
-    "success_url": "https://telegram.dog/TroJanzHEX",
+    "website": "https://sethu-sn.me",
+    "repository": "https://github.com/gipsy-sn/Unlimited-Filter-Bot",
+    "success_url": "https://telegram.dog/sethu-snxxxxxxxxxxxxxxxxxxxxxxxxx",
     "env": {
         "WEBHOOK": {
             "description": "No need to change this field!",
